@@ -1,31 +1,47 @@
 var express = require('express');
 var app = express();
-var mysql = require('mysql');
+const mariadb = require('mariadb');
 
 const port = 8080;
 
+const pool = mariadb.createPool({
+    // host: 'localhost',
+    user: 'clip',
+    password: 'board*',
+    // database: 'clipboard',
+    // connectionLimit: 10,
+    // port: 3306 
+});
 
 
+//https://chartio.com/resources/tutorials/how-to-grant-all-privileges-on-a-database-in-mysql/
+//https://www.daniloaz.com/en/how-to-create-a-user-in-mysql-mariadb-and-grant-permissions-on-a-specific-database/
 
-
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({ host: process.env.DB_HOST, user: process.env.DB_USER, connectionLimit: 5 });
 pool.getConnection()
     .then(conn => {
-
-        conn.query("SELECT 1 as val")
-            .then(rows => { // rows: [ {val: 1}, meta: ... ]
-                return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
+        conn.query("SELECT * from clipboard.Clips")
+            .then((rows) => {
+                // console.log(rows); //[ {val: 1}, meta: ... ]
+                rows.map(t => {
+                    console.log(t)
+                })
+                // //Table must have been created before 
+                // // " CREATE TABLE myTable (id int, val varchar(255)) "
+                // return conn.query("INSERT INTO myTable value (?, ?)", [1, "mariadb"]);
             })
-            .then(res => { // res: { affectedRows: 1, insertId: 1, warningStatus: 0 }
-                conn.release(); // release to pool
+            .then((res) => {
+                // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+                conn.end();
             })
             .catch(err => {
-                conn.release(); // release to pool
+                //handle error
+                console.log(err);
+                conn.end();
             })
 
     }).catch(err => {
-        //not connected
+        console.log('not connected')
+        console.log(err)
     });
 
 

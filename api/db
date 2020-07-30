@@ -1,0 +1,8 @@
+CREATE TABLE `Clips` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`content` TEXT,
+	`imagesrc` varchar(255),
+	`time` DATETIME NOT NULL,
+	`private` BOOLEAN NOT NULL,
+	PRIMARY KEY (`id`)
+);
