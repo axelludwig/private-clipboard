@@ -6,3 +6,10 @@ CREATE TABLE `Clips` (
 	`private` BOOLEAN NOT NULL,
 	PRIMARY KEY (`id`)
 );
+
+insert into
+	Clips (content, time, private)
+values
+	('test', CURRENT_TIMESTAMP, false)
+
+	
