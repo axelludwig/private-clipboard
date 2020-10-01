@@ -1,10 +1,16 @@
 var express = require('express');
 var mariadb = require('mariadb');
+var axios = require('axios')
 
 var port = 8080;
 
 var app = express();
 app.use(express.json());
+
+let http = require('http');
+let server = http.Server(app);
+let socketIO = require('socket.io');
+let io = socketIO(server);
 
 const pool = mariadb.createPool({
     // host: 'localhost',
@@ -18,6 +24,20 @@ const pool = mariadb.createPool({
 
 //https://chartio.com/resources/tutorials/how-to-grant-all-privileges-on-a-database-in-mysql/
 //https://www.daniloaz.com/en/how-to-create-a-user-in-mysql-mariadb-and-grant-permissions-on-a-specific-database/
+
+
+io.on('connection', (socket) => {
+    console.log('socket connection starts');
+    var user;
+
+    socket.on('connectUser', (username) => {
+        user = usersController.saveUsername(username);
+        io.emit('newUserConnected', username);
+        console.log('user ' + username + ' connected');
+    })
+})
+
+
 
 
 
