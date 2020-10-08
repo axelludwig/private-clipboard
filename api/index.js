@@ -2,15 +2,20 @@ var express = require('express');
 var mariadb = require('mariadb');
 var axios = require('axios')
 
+const cors = require('cors')
+
+
 var port = 8080;
 
 var app = express();
 app.use(express.json());
+app.use(cors);
 
 let http = require('http');
 let server = http.Server(app);
 let socketIO = require('socket.io');
 let io = socketIO(server);
+
 
 // const pool = mariadb.createPool({
 //     // host: 'localhost',
@@ -98,6 +103,11 @@ app.post('/clips', function (req, res) {
     //         console.log('not connected')
     //         console.log(err)
     //     });
+})
+
+app.get('/', (req, res) => {
+    console.log('ok')
+    res.send('ok')
 })
 
 app.listen(port);

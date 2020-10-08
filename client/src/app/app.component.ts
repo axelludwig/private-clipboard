@@ -14,27 +14,8 @@ import { FormsModule } from '@angular/forms';
 
 
 export class AppComponent implements OnInit {
-  @Input() content: string;
-  title = 'private-clipboard';
-  title2 = 'salut'
-  private: boolean;
-
-
-  constructor() {
-
-  }
-
   ngOnInit() {
 
-  }
-
-  public test() {
-    console.log(this.content);
-    console.log(this.private)
-  }
-
-  public test2() {
-    console.log(this.title2)
   }
 }
 

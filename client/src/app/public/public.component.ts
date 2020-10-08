@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { ClipComponent } from '../clip/clip.component';
+import { NewClipComponent } from '../new-clip/new-clip.component';
 
 @Component({
   selector: 'app-public',

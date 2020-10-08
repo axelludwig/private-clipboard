@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ViewComponent } from './view/view.component';
 import { PublicComponent } from './public/public.component';
 import { PrivateComponent } from './private/private.component';
 import { Routes, RouterModule } from '@angular/router';
+import { ClipComponent } from './clip/clip.component';
+import { NewClipComponent } from './new-clip/new-clip.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'public-clipboard/public', pathMatch: 'full' },
@@ -18,9 +19,10 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ViewComponent,
     PublicComponent,
-    PrivateComponent
+    PrivateComponent,
+    ClipComponent,
+    NewClipComponent
   ],
   imports: [
     BrowserModule,
