@@ -12,14 +12,14 @@ let server = http.Server(app);
 let socketIO = require('socket.io');
 let io = socketIO(server);
 
-const pool = mariadb.createPool({
-    // host: 'localhost',
-    user: 'clip',
-    password: 'board*',
-    database: 'clipboard',
-    // connectionLimit: 10,
-    // port: 3306 
-});
+// const pool = mariadb.createPool({
+//     // host: 'localhost',
+//     user: 'clip',
+//     password: 'board*',
+//     database: 'clipboard',
+//     // connectionLimit: 10,
+//     // port: 3306 
+// });
 
 
 //https://chartio.com/resources/tutorials/how-to-grant-all-privileges-on-a-database-in-mysql/
@@ -41,33 +41,33 @@ io.on('connection', (socket) => {
 
 
 
-app.get('/clips', function (req, res) {
-    pool.getConnection()
-        .then(conn => {
-            conn.query("SELECT * from Clips")
-                .then((rows) => {
-                    console.log('ok')
-                    // console.log(rows); //[ {val: 1}, meta: ... ]
-                    rows.map(t => {
-                        res.json(t);
-                        console.log(t)
-                    })
-                })
-                // .then((res) => {
-                //     // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-                //     conn.end();
-                // })
-                .catch(err => {
-                    //handle error
-                    console.log(err);
-                    conn.end();
-                })
+// app.get('/clips', function (req, res) {
+//     pool.getConnection()
+//         .then(conn => {
+//             conn.query("SELECT * from Clips")
+//                 .then((rows) => {
+//                     console.log('ok')
+//                     // console.log(rows); //[ {val: 1}, meta: ... ]
+//                     rows.map(t => {
+//                         res.json(t);
+//                         console.log(t)
+//                     })
+//                 })
+//                 // .then((res) => {
+//                 //     // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+//                 //     conn.end();
+//                 // })
+//                 .catch(err => {
+//                     //handle error
+//                     console.log(err);
+//                     conn.end();
+//                 })
 
-        }).catch(err => {
-            console.log('not connected')
-            console.log(err)
-        });
-});
+//         }).catch(err => {
+//             console.log('not connected')
+//             console.log(err)
+//         });
+// });
 
 app.post('/clips', function (req, res) {
     console.log(req.body);

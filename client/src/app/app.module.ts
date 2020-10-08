@@ -5,16 +5,28 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ViewComponent } from './view/view.component';
+import { PublicComponent } from './public/public.component';
+import { PrivateComponent } from './private/private.component';
+import { Routes, RouterModule } from '@angular/router';
 
+const appRoutes: Routes = [
+  { path: '', redirectTo: 'public-clipboard/public', pathMatch: 'full' },
+  { path: 'public-clipboard/public', component: PublicComponent },
+  { path: 'public-clipboard/private', component: PrivateComponent },
+  { path: '**', redirectTo: 'public-clipboard/public' }
+];
 @NgModule({
   declarations: [
     AppComponent,
-    ViewComponent
+    ViewComponent,
+    PublicComponent,
+    PrivateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
