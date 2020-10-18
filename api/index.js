@@ -1,114 +1,112 @@
-var express = require('express');
-var mariadb = require('mariadb');
-var axios = require('axios')
+const mariadb = require('mariadb');
+const express = require("express");
+const http = require("http");
+const axios = require("axios");
+const socketIo = require("socket.io");
 
-const cors = require('cors')
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+const apiport = 8000;
+const port = 8001;
 
 
-var port = 8080;
-
-var app = express();
 app.use(express.json());
-app.use(cors);
+io.origins('*:*');
 
-let http = require('http');
-let server = http.Server(app);
-let socketIO = require('socket.io');
-let io = socketIO(server);
+const pool = mariadb.createPool({
+    // host: 'localhost',
+    user: 'clip',
+    password: 'board*',
+    database: 'clipboard',
+    // connectionLimit: 10,
+    // port: 3306 
+});
 
-
-// const pool = mariadb.createPool({
-//     // host: 'localhost',
-//     user: 'clip',
-//     password: 'board*',
-//     database: 'clipboard',
-//     // connectionLimit: 10,
-//     // port: 3306 
-// });
-
-
-//https://chartio.com/resources/tutorials/how-to-grant-all-privileges-on-a-database-in-mysql/
-//https://www.daniloaz.com/en/how-to-create-a-user-in-mysql-mariadb-and-grant-permissions-on-a-specific-database/
-
-
-io.on('connection', (socket) => {
-    console.log('socket connection starts');
-    var user;
-
-    socket.on('connectUser', (username) => {
-        user = usersController.saveUsername(username);
-        io.emit('newUserConnected', username);
-        console.log('user ' + username + ' connected');
+io.on("connection", socket => {
+    console.log("client connected")
+    socket.on('test', () => {
+        console.log("sockets ok")
+        socket.emit("test2", '');
     })
-})
+    socket.on("disconnect", () => console.log("disconnected"));
 
+});
 
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
+app.get('/clips', function (req, res) {
+    pool.getConnection()
+        .then(conn => {
+            console.log('connection to db')
+            conn.query("SELECT * from Clips")
+                .then((rows) => {
+                    console.log('ok')
+                    // console.log(rows); //[ {val: 1}, meta: ... ]
+                    rows.map(t => {
+                        res.json(t);
+                        console.log(t)
+                    })
+                })
+                // .then((res) => {
+                //     // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+                //     conn.end();
+                // })
+                .catch(err => {
+                    //handle error
+                    console.log(err);
+                    conn.end();
+                })
 
-
-// app.get('/clips', function (req, res) {
-//     pool.getConnection()
-//         .then(conn => {
-//             conn.query("SELECT * from Clips")
-//                 .then((rows) => {
-//                     console.log('ok')
-//                     // console.log(rows); //[ {val: 1}, meta: ... ]
-//                     rows.map(t => {
-//                         res.json(t);
-//                         console.log(t)
-//                     })
-//                 })
-//                 // .then((res) => {
-//                 //     // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-//                 //     conn.end();
-//                 // })
-//                 .catch(err => {
-//                     //handle error
-//                     console.log(err);
-//                     conn.end();
-//                 })
-
-//         }).catch(err => {
-//             console.log('not connected')
-//             console.log(err)
-//         });
-// });
+        }).catch(err => {
+            console.log('not connected')
+            console.log(err)
+        });
+});
 
 app.post('/clips', function (req, res) {
     console.log(req.body);
 
-    // pool.getConnection()
-    //     .then(conn => {
-    //         conn.query("INSERT INTO Clips(content, tisme, private)  values('test', CURRENT_TIMESTAMP, false)")
-    //             .then((rows) => {
-    //                 console.log('ok')
-    //                 // console.log(rows); //[ {val: 1}, meta: ... ]
-    //                 res.json(t);
-    //                 console.log(t)
-    //                 // //Table must have been created before 
-    //                 // // " CREATE TABLE myTable (id int, val varchar(255)) "
-    //                 // return conn.query("INSERT INTO myTasble value (?, ?)", [1, "mariadb"]);
-    //             })
-    //             .then((res) => {
-    //                 // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-    //                 conn.end();
-    //             })
-    //             .catch(err => {
-    //                 //handle error
-    //                 console.log(err);
-    //                 conn.end();
-    //             })
+    pool.getConnection()
+        .then(conn => {
+            conn.query("INSERT INTO Clips(content, tisme, private)  values('test', CURRENT_TIMESTAMP, false)")
+                .then((rows) => {
+                    console.log('ok')
+                    // console.log(rows); //[ {val: 1}, meta: ... ]
+                    res.json(t);
+                    console.log(t)
+                    // //Table must have been created before 
+                    // // " CREATE TABLE myTable (id int, val varchar(255)) "
+                    // return conn.query("INSERT INTO myTasble value (?, ?)", [1, "mariadb"]);
+                })
+                .then((res) => {
+                    // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+                    conn.end();
+                })
+                .catch(err => {
+                    //handle error
+                    console.log(err);
+                    conn.end();
+                })
 
-    //     }).catch(err => {
-    //         console.log('not connected')
-    //         console.log(err)
-    //     });
+        }).catch(err => {
+            console.log('not connected')
+            console.log(err)
+        });
 })
 
 app.get('/', (req, res) => {
     console.log('ok')
-    res.send('ok')
+    res.send('server ok')
 })
 
-app.listen(port);
-console.log('listening on http://localhost:' + port)
+io.listen(port);
+console.log('sockets listening on port ', port);
+
+app.listen(apiport);
+console.log('listening on port', apiport)
