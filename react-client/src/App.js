@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Switch, Route, Redirect } from 'react-router-dom';
 import socketIOClient from "socket.io-client";
 
 import Public from './components/public/Public'
@@ -20,6 +20,8 @@ class App extends Component {
 
 
 
+
+
   }
 
   onFinish = values => {
@@ -32,15 +34,14 @@ class App extends Component {
 
   componentDidMount() {
     document.body.style.backgroundColor = "#212121"
-
   }
 
 
 
   handleClick = (t) => {
-    if (1 == t) window.location.replace('public')
-    else if (2 == t) window.location.replace('private')
-    else if (3 == t) {
+    if (1 === t) window.location.replace('public')
+    else if (2 === t) window.location.replace('private')
+    else if (3 === t) {
       socket.emit('test');
       socket.on('test2', () => {
         console.log('test opk')
@@ -58,7 +59,7 @@ class App extends Component {
 
         <div className='switch'>
           <Button onClick={this.handleClick.bind(this, 1)} variant="primary">public</Button>{' '}
-          <Button onClick={this.handleClick.bind(this, 1)} variant="primary">private</Button>{' '}
+          <Button onClick={this.handleClick.bind(this, 2)} variant="primary">private</Button>{' '}
           <Button onClick={this.handleClick.bind(this, 3)} variant="secondary">socket</Button>{' '}
         </div>
 
@@ -68,7 +69,7 @@ class App extends Component {
             <Public {...props} propssocket={socket} />
           )} />
           <Route path="/private" render={(props) => (
-            <Public {...props} propssocket={socket} />
+            <Private {...props} propssocket={socket} />
           )} exact />
         </Switch>
 

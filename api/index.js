@@ -43,24 +43,20 @@ app.use(function (req, res, next) {
 app.get('/clips', function (req, res) {
     pool.getConnection()
         .then(conn => {
-            console.log('connection to db')
+            // console.log('connection to db')
             conn.query("SELECT * from Clips")
                 .then((rows) => {
-                    console.log('ok')
-                    // console.log(rows); //[ {val: 1}, meta: ... ]
+                    var array = [];
                     rows.map(t => {
-                        res.json(t);
-                        console.log(t)
+                        array.push(t)
                     })
+                    res.json(array);
+                    // console.log(array)
                 })
-                // .then((res) => {
-                //     // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-                //     conn.end();
-                // })
                 .catch(err => {
                     //handle error
                     console.log(err);
-                    conn.end();
+                    // conn.end();
                 })
 
         }).catch(err => {
@@ -71,30 +67,18 @@ app.get('/clips', function (req, res) {
 
 app.post('/clips', function (req, res) {
     console.log(req.body);
-
+    var query = "INSERT INTO Clips(content, time, private)"
+        + "values('" + req.body.content + "'  , CURRENT_TIMESTAMP ," + req.body.private + ")"
+    console.log(query)
     pool.getConnection()
         .then(conn => {
-            conn.query("INSERT INTO Clips(content, tisme, private)  values('test', CURRENT_TIMESTAMP, false)")
-                .then((rows) => {
-                    console.log('ok')
-                    // console.log(rows); //[ {val: 1}, meta: ... ]
-                    res.json(t);
-                    console.log(t)
-                    // //Table must have been created before 
-                    // // " CREATE TABLE myTable (id int, val varchar(255)) "
-                    // return conn.query("INSERT INTO myTasble value (?, ?)", [1, "mariadb"]);
+            conn.query(query)
+                .then((row) => {
+                    res.json(row);
+                    console.log(row)
                 })
-                .then((res) => {
-                    // console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-                    conn.end();
-                })
-                .catch(err => {
-                    //handle error
-                    console.log(err);
-                    conn.end();
-                })
-
-        }).catch(err => {
+        })
+        .catch(err => {
             console.log('not connected')
             console.log(err)
         });

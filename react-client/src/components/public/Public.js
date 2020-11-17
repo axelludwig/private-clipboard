@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import NewClip from '../newclip/NewClip'
-import axios from 'axios'
 // import './Public.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,12 +13,51 @@ class Public extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      res: 'temp'
+      res: 'temp',
+      Clips: []
     }
+
+
+    this.props.propssocket.on('update', () => {
+      this.updateClips();
+    })
   }
 
-  componentDidMount() {
 
+
+  componentDidMount() {
+    this.updateClips();
+  }
+
+  updateClips = () => {
+    fetch("http://localhost:8000/clips", {
+      crossDomain: true,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      // body: JSON.stringify({
+      //   wstoken: 'any_token',
+      //   wsfunction: 'any_function',
+      //   moodlewsrestformat: 'json',
+      //   username: 'user',
+      //   password: 'pass',
+      // })
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        this.setState({ Clips: json })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  debug = () => {
+    console.log(this.state.Clips);
   }
 
   handleClick = () => {
@@ -29,7 +67,7 @@ class Public extends Component {
     // })
 
     // console.log('click')
-    fetch("http://localhost:8000", {
+    fetch("http://localhost:8000/clips", {
       crossDomain: true,
       method: 'GET',
       headers: {
@@ -59,6 +97,9 @@ class Public extends Component {
       <div>
         public
         <Button onClick={this.handleClick.bind(this)} variant="warning">fetch</Button>{' '}
+        <Button onClick={this.updateClips} variant="warning">update clips</Button>{' '}
+        <Button onClick={this.debug} variant="warning">debug</Button>{' '}
+
 
         <NewClip></NewClip>
       </div>

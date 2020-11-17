@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Private.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
 
 
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });

@@ -1,18 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 // import './Public.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Button, Form, Container, Row, Col, ButtonGroup, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Button, Form, Container, Row, Col, } from 'react-bootstrap';
 
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
-
-const radios = [
-    { name: 'Active', value: '1' },
-    { name: 'Radio', value: '2' },
-    { name: 'Radio', value: '3' },
-];
 
 class NewClip extends Component {
     constructor(props) {
@@ -30,32 +23,18 @@ class NewClip extends Component {
     }
 
     handleClick = () => {
-        // axios({
-        //   url: "http://localhost:8000",
-        //   method: "GET"
-        // })
-
-        // console.log('click')
-        fetch("http://localhost:8000", {
+        fetch("http://localhost:8000/clips", {
             crossDomain: true,
-            method: 'GET',
+            method: 'POST',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
-
             },
-            // body: JSON.stringify({
-            //   wstoken: 'any_token',
-            //   wsfunction: 'any_function',
-            //   moodlewsrestformat: 'json',
-            //   username: 'user',
-            //   password: 'pass',
-            // })
-        })
-            .then((response) => response.text())
-            .then((responseText) => {
-                alert(responseText);
+            body: JSON.stringify({
+                content: 'test55 post 5',
+                private: 'true',
             })
+        })
+            .then((res) => { })
             .catch((error) => {
                 console.error(error);
             });
@@ -75,9 +54,6 @@ class NewClip extends Component {
                                 </Col>
                                 <Col sm="8">
                                     <Form.Control type="email" placeholder="Enter email" />
-                                    <Form.Text className="text-muted">
-                                        We'll never share your email with anyone else.
-                                    </Form.Text>
                                 </Col>
 
                                 <Col sm="2">
@@ -90,7 +66,7 @@ class NewClip extends Component {
 
 
 
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" onClick={this.handleClick} >
                         Submit
                     </Button>
                 </Form>
