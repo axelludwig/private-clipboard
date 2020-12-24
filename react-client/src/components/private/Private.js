@@ -12,9 +12,6 @@ class Private extends Component {
     this.state = {
       res: 'temp'
     }
-
-
-
   }
 
   componentDidMount() {

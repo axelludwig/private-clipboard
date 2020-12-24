@@ -39,7 +39,7 @@ class App extends Component {
 
 
   handleClick = (t) => {
-    if (1 === t) window.location.replace('public')
+    if (1 === t) window.location.replace('/')
     else if (2 === t) window.location.replace('private')
     else if (3 === t) {
       socket.emit('test');
@@ -64,14 +64,14 @@ class App extends Component {
         </div>
 
         <Switch>
-          <Redirect exact from='/' to='/public' />
-          <Route path="/public" render={(props) => (
+          <Route exact path="/" render={(props) => (
             <Public {...props} propssocket={socket} />
           )} />
           <Route path="/private" render={(props) => (
             <Private {...props} propssocket={socket} />
-          )} exact />
+          )} />
         </Switch>
+        {/* <Redirect from='/' to='/public' exact /> */}
 
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import socketIOClient from "socket.io-client";
 
 import NewClip from '../newclip/NewClip'
 // import './Public.css';
@@ -8,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 
 
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
+const socket = socketIOClient('http://localhost:8001');
 
 class Public extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class Public extends Component {
     }
 
 
-    this.props.propssocket.on('update', () => {
+    socket.on('update', () => {
       this.updateClips();
     })
   }
