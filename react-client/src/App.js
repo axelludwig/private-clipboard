@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Switch, Route } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 import Public from './components/public/Public'
 import Private from './components/private/Private'
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+
 
 // const socket = socketIOClient('http://localhost:8001');
 
@@ -16,11 +17,6 @@ class App extends Component {
     this.state = {
       res: 'temp'
     }
-
-
-
-
-
   }
 
   onFinish = values => {
@@ -34,8 +30,6 @@ class App extends Component {
   componentDidMount() {
     document.body.style.backgroundColor = "#212121"
   }
-
-
 
   handleClick = (t) => {
     if (1 === t) window.location.replace('/')

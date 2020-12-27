@@ -41,7 +41,7 @@ class Clips extends Component {
             })
             .then((json) => {
                 this.setState({ clips: json })
-                console.log(this.state.clips)
+                // console.log(this.state.clips)
             })
             .catch((error) => {
                 console.error(error);
@@ -66,7 +66,6 @@ class Clips extends Component {
         } else this.state.clips.map((c) => {
             if (c.private) clips.push(<Clip raw={c} key={c.id}> </Clip>); return null;
         })
-        console.log(clips)
 
         return (
             <div>

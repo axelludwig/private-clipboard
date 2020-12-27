@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 // import './Public.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +16,7 @@ class NewClip extends Component {
       clipText: '',
       private: false,
       privateText: 'public',
-      value: ''
+      selectedFile: null
     }
   }
 
@@ -55,12 +56,35 @@ class NewClip extends Component {
     this.setState({ clipText: event.target.value })
   }
 
+  fileChangedHandler = (event) => {
+    const file = event.target.files[0]
+    this.setState({ selectedFile: event.target.files[0] })
+  }
+
+  uploadHandler = () => {
+    console.log(this.state.selectedFile)
+    const formData = new FormData()
+    formData.append(
+      'image',
+      this.state.selectedFile,
+      this.state.selectedFile.name,      
+    )
+    axios.post('http://localhost:8000/image', formData, {
+      onUploadProgress: progressEvent => {
+        console.log(progressEvent.loaded / progressEvent.total)
+      }
+    })
+  }
+
   render() {
     return (
       <div>
         new clip
+        <input type="file" onChange={this.fileChangedHandler} />
+        <button onClick={this.uploadHandler}>Upload!</button>
         <Form>
-          <Form.Group controlId="formBasicEmail">
+          <Form.Group >
+            {/* <Form.Group controlId="formBasicEmail"> */}
             <Container>
               <Row>
                 <Col sm="2">

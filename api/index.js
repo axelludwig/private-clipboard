@@ -1,8 +1,11 @@
-const mariadb = require('mariadb');
 const express = require("express");
-const http = require("http");
 const axios = require("axios");
+const mariadb = require('mariadb');
+const fs = require('fs')
+const http = require("http");
 const socketIo = require("socket.io");
+const fileUpload = require('express-fileupload');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -14,6 +17,8 @@ const port = 8001;
 
 app.use(express.json());
 io.origins('*:*');
+
+app.use(fileUpload());
 
 const pool = mariadb.createPool({
   // host: 'localhost',
@@ -43,22 +48,13 @@ app.use(function (req, res, next) {
 app.get('/clips', function (req, res) {
   pool.getConnection()
     .then(conn => {
-      // console.log('connection to db')
       conn.query("SELECT * from Clips")
         .then((rows) => {
           var array = [];
-          rows.map(t => {
-            array.push(t)
-          })
+          rows.map(t => array.push(t))
           res.json(array);
-          // console.log(array)
         })
-        .catch(err => {
-          //handle error
-          console.log(err);
-          // conn.end();
-        })
-
+        .catch(err => console.log(err))
     }).catch(err => {
       console.log('not connected')
       console.log(err)
@@ -88,6 +84,41 @@ app.post('/clips', function (req, res) {
 app.get('/', (req, res) => {
   console.log('ok')
   res.send('server ok')
+})
+
+app.get('/image', function (req, res) {
+  var jpg = __dirname + '\\images\\' + req.body.id + '.jpg';
+  var png = __dirname + '\\images\\' + req.body.id + '.png';
+  var found = false;
+  try {
+    if (fs.existsSync(jpg)) {
+      found = true;
+      res.sendFile(jpg)
+    }
+  } catch { };
+  if (!found) {
+    try {
+      if (fs.existsSync(png)) res.sendFile(png)
+    } catch { };
+  }
+})
+
+app.post('/image', function (req, res) {
+  if (!req.files) {
+    return res.status(500).send({ msg: "file is not found" })
+  }
+
+  var file = req.files.image;
+
+  file.mv(__dirname + '/images/' + file.name, function (err) {
+    if (err) {
+      console.log(err)
+      return res.status(500).send({ msg: "Error occured" });
+    }
+    // returing the response with file path and name
+    console.log('file ' + file.name + ' downloaded');
+    return res.send('file ' + file.name + ' uploaded');
+  });
 })
 
 io.listen(port);
