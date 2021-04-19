@@ -48,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        {this.state.res}
+        {/* {this.state.res} */}
 
         <div className='switch'>
           <Button onClick={this.handleClick.bind(this, 1)} variant="primary">public</Button>{' '}

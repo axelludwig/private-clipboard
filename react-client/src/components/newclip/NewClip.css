@@ -1,3 +1,31 @@
 .toggleButton {
     border: 1px solid red !important;
 }
+
+.uploaded {
+    max-width: 200px !important;
+    /* max-height: 50% !important; */
+}
+
+.formClip {
+    z-index: 100000 !important;
+}
+
+.uploaded:hover {
+    /* background: url(https://pbs.twimg.com/media/Ek7wcwIVkAAf8ld?format=jpg&name=small) -10px -185px, url(https://pbs.twimg.com/media/Ek7wcwIVkAAf8ld?format=jpg&name=small) 10px -185px, red;
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 50px;
+    transition: all 0.5s; */
+    transform: scale(3);
+    /* transform: translate(50px, 100px); */
+    /* z-index: 100000 !important;
+    width: 100%;  */
+    /* max-height: 50% !important; */
+}
+
+.imageUpload {
+    background-position: 10px -185px;
+    /* max-height: 200px !important;
+    border: 5px solid red; */
+}
