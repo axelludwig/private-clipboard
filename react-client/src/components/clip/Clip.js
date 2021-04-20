@@ -47,8 +47,6 @@ class Clip extends Component {
 
 
   render() {
-
-    console.log(this.state.imagesrc);
     // var image = <Image src="http://localhost:8000/image/${this.state.imagesrc}" fluid />
     var image = <Image src={"http://localhost:8000/images/" + this.state.imagesrc} fluid />
 

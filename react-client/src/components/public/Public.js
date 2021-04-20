@@ -82,8 +82,8 @@ class Public extends Component {
         <Button onClick={this.updateClips} variant="warning">update clips</Button>{' '}
         <Button onClick={this.debug} variant="warning">debug</Button>{' '} */}
 
-        <NewClip></NewClip>
-        <Clips private={true}></Clips>
+        <Clips private={false} />
+        {/* <Clips private={true}></Clips> */}
       </div>
 
     );

@@ -1,0 +1,4 @@
+.clips {
+  height: calc(100vh - 220px);
+  border: solid 1px red;
+}

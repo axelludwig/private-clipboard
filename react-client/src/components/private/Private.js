@@ -51,8 +51,7 @@ class Private extends Component {
     return (
       <div>
         private
-        <NewClip></NewClip>
-        <Clips private={false}></Clips>
+        <Clips private={true} />
       </div>
 
     );

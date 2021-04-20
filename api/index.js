@@ -34,6 +34,10 @@ io.on("connection", (socket) => {
     console.log("sockets ok");
     socket.emit("test2", "");
   });
+  socket.on("update", () => {
+    console.log("update");
+    // socket.emit("test2", "");
+  });
   socket.on("disconnect", () => console.log("disconnected"));
 });
 
@@ -56,6 +60,7 @@ app.get("/clips", function (req, res) {
           var array = [];
           rows.map((t) => array.push(t));
           res.json(array);
+          conn.release();
         })
         .catch((err) => console.log(err));
     })
@@ -75,6 +80,7 @@ app.delete("/clips", function (req, res) {
       conn.query(query).then((row) => {
         res.json(row);
         console.log(row);
+        conn.release();
       });
     })
     .catch((err) => {
@@ -84,7 +90,7 @@ app.delete("/clips", function (req, res) {
 });
 
 app.post("/clips", function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   var query =
     "INSERT INTO Clips(content, time, private, imagesrc)" +
     "values('" +
@@ -94,13 +100,14 @@ app.post("/clips", function (req, res) {
     " ,'" +
     req.body.imagesrc +
     "')";
-  console.log(query);
+  // console.log(query);
   pool
     .getConnection()
     .then((conn) => {
       conn.query(query).then((row) => {
-        res.json(row);
-        console.log(row);
+        console.log(row.insertId);
+        res.json({ 'id': row.insertId });
+        conn.release();
       });
     })
     .catch((err) => {

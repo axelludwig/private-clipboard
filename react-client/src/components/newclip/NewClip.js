@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './NewClip.css';
+import socketIOClient from "socket.io-client";
+import Clips from '../clips/Clips'
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,22 +11,22 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Button,
   IconButton,
-  Tooltip,
-  makeStyles,
-  Theme,
   Checkbox,
-  Typography,
   Grid,
-  Paper
 } from "@material-ui/core";
-
 import DeleteIcon from '@material-ui/icons/Delete';
-
-import { PhotoCamera } from "@material-ui/icons";
-import Image from 'material-ui-image'
-
-
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
+const socket = socketIOClient("http://localhost:8001");
+
+// socket.on("connection", (socket) => {
+//   console.log("client connected");
+//   socket.emit("update", "");
+//   socket.on("test", () => {
+//     console.log("sockets ok");
+//     socket.emit("test2", "");
+//   });
+//   socket.on("disconnect", () => console.log("disconnected"));
+// });
 
 class NewClip extends Component {
   constructor(props) {
@@ -37,29 +39,36 @@ class NewClip extends Component {
       imagePreview: null,
       buttonText: 'Upload File!',
       backupFile: null,
-      fileName: null
+      fileName: null,
+      newClip: null
     }
   }
 
   componentDidMount() {
-
   }
 
   handleSubmit = () => {
-    console.log();
+    if (null != this.state.selectedFile) this.uploadHandler();
+    var json = {
+      content: this.state.clipText,
+      private: this.state.private,
+      imagesrc: this.state.fileName
+    }
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        content: this.state.clipText,
-        private: this.state.private,
-        imagesrc: this.state.fileName
-      })
+      body: JSON.stringify(json)
     })
-      .then((res) => { })
+      .then((res) => { return res.json(); })
+      .then((res) => {
+        json.id = res.id;
+        this.setState({
+          newClip: json
+        })
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -71,8 +80,6 @@ class NewClip extends Component {
   }
 
   debug = () => {
-    // console.log(this.state.clipText);
-    // console.log(this.state.private)
     console.log(this.state.selectedFile);
   }
 
@@ -125,12 +132,7 @@ class NewClip extends Component {
 
     return (
       <div>
-
         <div className='formClip'>
-
-          {/* <div className='uploaded'>
-            test
-        </div> */}
           <div className='imageUpload'>
             <Grid container spacing={3}>
               <Grid item xs={3}>
@@ -141,25 +143,23 @@ class NewClip extends Component {
                 {deleteButton}
               </Grid>
               {/* <Typography variant="body1" gutterBottom> h4. Heading </Typography> */}
-
               <Grid item xs={9}>
                 {image}
               </Grid>
-
             </Grid>
-
           </div>
 
-
-          <button onClick={this.uploadHandler}> {this.state.buttonText} </button>
+          {/* <button onClick={this.uploadHandler}> {this.state.buttonText} </button> */}
           <input onChange={this.handleChange} value={this.state.clipText} type="text" placeholder="clip" />
 
           <Checkbox checked={this.state.private} onChange={this.handleCheck} type="checkbox" label={this.state.privateText} />
           <Button variant="contained" onClick={this.handleSubmit}>Submit</Button>
           <Button variant="contained" onClick={this.debug}> debug </Button>
-
         </div>
 
+        <div clips>
+          <Clips newClip={this.state.newClip} private={this.props.private}></Clips>
+        </div>
 
       </div >
     );

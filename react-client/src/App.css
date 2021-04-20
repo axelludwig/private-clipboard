@@ -1,13 +1,14 @@
 .app {
-    /* margin: 1%; */
-    background-color: #303030;
-    color: white;
-margin: 2% 15% 2% 15% ;
+  /* margin: 1%; */
+  background-color: #303030;
+  color: white;
+  margin: 2% 15% 2% 15%;
+  overflow: hidden; /* Hide scrollbars */
 }
 
 .switch {
-    /* margin-bottom: 5%; */
+  /* margin-bottom: 5%; */
 }
 
-html{
+html {
 }
