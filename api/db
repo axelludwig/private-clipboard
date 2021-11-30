@@ -10,6 +10,6 @@ CREATE TABLE `Clips` (
 insert into
 	Clips (content, time, private)
 values
-	('test', CURRENT_TIMESTAMP, false)
+	('test', CURRENT_TIMESTAMP, false);
 
 	
