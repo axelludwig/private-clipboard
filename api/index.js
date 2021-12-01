@@ -21,8 +21,8 @@ app.use(fileUpload());
 
 const pool = mariadb.createPool({
   // host: 'localhost',
-  user: "clip",
-  password: "board*",
+  user: "root",
+  password: "root",
   database: "clipboard",
   connectionLimit: 100,
   // port: 3306
@@ -33,6 +33,10 @@ io.on("connection", (socket) => {
   socket.on("test", () => {
     console.log("sockets ok");
     socket.emit("test2", "");
+  });
+  socket.on("updateAll", () => {
+    console.log("sockets ok");
+    socket.broadcast.emit("update", "");
   });
   socket.on("update", () => {
     console.log("update");

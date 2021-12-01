@@ -1,4 +1,24 @@
+.formClip {
+  /* border: solid 1px red; */
+  position: fixed;
+  width: 70%;
+  /* position: fixed; */
+  /* top: 0; */
+  /* z-index: 10; */
+  /* padding: 0 0 10% 0; */
+  background-color: #303030;
+  overflow: hidden;
+}
+
 .clips {
-  height: calc(100vh - 220px);
-  border: solid 1px red;
+  /* border: solid 1px green; */
+  /* height: 100%; */
+  /* overflow: hidden; */
+  /* padding-top: 100px; */
+  /* position: relative; */
+  /* margin-top: calc(100vh - 67%); */
+  /* margin-top: 9%; */
+  /* height: 20%; */
+  margin-bottom: 5%;
+  height: calc(100vh - 90%);
 }

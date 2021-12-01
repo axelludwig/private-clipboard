@@ -5,14 +5,8 @@ import axios from 'axios';
 import Clip from "../clip/Clip";
 import "./Clips.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Button,
-  IconButton,
-  Checkbox,
-  Grid,
-} from "@material-ui/core";
+import { Button, IconButton, Checkbox, Grid, } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-
 import CustomScroller from 'react-custom-scroller';
 
 const socket = socketIOClient("http://localhost:8001");
@@ -22,6 +16,7 @@ class Clips extends Component {
     super(props);
     this.state = {
       clips: [],
+      privateClips: [],
       clipText: '',
       private: false,
       privateText: 'public',
@@ -31,10 +26,17 @@ class Clips extends Component {
       backupFile: null,
       fileName: null
     };
+    this.myRef = React.createRef()
 
     socket.on("update", () => {
       this.updateClips();
+      console.log('updated');
     });
+  }
+
+  componentDidMount() {
+    this.updateClips();
+    console.log('ok');
   }
 
   addClip() {
@@ -46,9 +48,7 @@ class Clips extends Component {
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify(json)
     })
       .then((res) => { return res.json(); })
@@ -56,13 +56,46 @@ class Clips extends Component {
         json.id = res.id;
         var array = this.state.clips;
         array.push(json)
-        this.setState({
-          clips: array
-        })
+        this.setState({ clips: array })
+        socket.emit("updateAll", "");
       })
       .catch((error) => {
         console.error(error);
       });
+  }
+
+  updateClips = () => {
+    fetch("http://localhost:8000/clips", {
+      crossDomain: true,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        var array = [];
+        json.map((clip) => {
+          if (clip.private && this.props.private) array.push(clip)
+          else if (!clip.private && !this.props.private) array.push(clip)
+        });
+        this.setState({ clips: array });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  deleteImage = (event) => {
+
+    this.setState({
+      imagePreview: null,
+      selectedFile: null,
+      buttonText: 'Upload File'
+    })
   }
 
   handleSubmit = () => {
@@ -75,20 +108,28 @@ class Clips extends Component {
     else this.setState({ private: true, privateText: 'private' })
   }
 
-  debug = () => {
-    console.log(this.state.selectedFile);
+  handleClick = (t) => {
+    if (1 === t) window.location.replace('/')
+    else if (2 === t) window.location.replace('private')
+    // else if (3 === t) {
+    //   socket.emit('test');
+    //   socket.on('test2', () => {
+    //     console.log('test opk')
+    //     this.setState({
+    //       res: 'ça marche'
+    //     })
+    //   })
+    // }
   }
 
   handleChange = (event) => {
     this.setState({ clipText: event.target.value })
   }
 
-  deleteImage = (event) => {
-    this.setState({
-      imagePreview: null,
-      selectedFile: null,
-      buttonText: 'Upload File'
-    })
+  debug = () => {
+    // console.log(this.state.selectedFile);
+    window.scrollTo(0, document.body.scrollHeight);
+
   }
 
   fileChangedHandler = (event) => {
@@ -114,23 +155,14 @@ class Clips extends Component {
     axios.post('http://localhost:8000/image', formData, config);
   }
 
-  componentDidMount() {
-    this.updateClips();
-    console.log('ok');
-  }
-
   componentDidUpdate() {
-    // console.log(this.props.newClip);
-    // console.log(this.state.lastNewClip);
-    // if (!null == this.props.newClip && this.state.lastNewClip != this.props.newClip) {
-    //   console.log('rerender');
-
   }
-  // this.updateClips();
 
   deteleClip(id) {
-    var array = this.state.clips.filter((item) => { return item.id != id })
-    this.setState({ clips: array });
+    if (this.props.private) var localClips = this.state.privateClips;
+    else var localClips = this.state.publicClips;
+    localClips.filter((item) => { return item.id != id })
+    this.setState({ clips: localClips });
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
       method: "DELETE",
@@ -147,71 +179,48 @@ class Clips extends Component {
       });
   }
 
-
-
-  updateClips = () => {
-    fetch("http://localhost:8000/clips", {
-      crossDomain: true,
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        this.setState({ clips: json });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  handleClick = () => {
-    // socket.emit('test');
-    // socket.on('test2', () => {
-    //   console.log('test opk')
-    //   this.setState({
-    //     res: 'ça marche'
-    //   })
-    // })
-  };
-
   deleteClipEvent = (id) => {
     this.deteleClip(id);
   };
 
-  render() {
+  // handleClick = () => {
+  // };
 
+  render() {
+    // create image if necessary
     var image, deleteButton;
     if (null != this.state.imagePreview) {
       image = < img className='uploaded' src={this.state.imagePreview} />
       deleteButton = (<IconButton onClick={this.deleteImage} aria-label="delete"> <DeleteIcon /> </IconButton>)
-      // < Button onClick = { this.deleteImage } variant = "outlined" > Default</Button >
     }
 
-    var clips = [];
-    var length;
-    if (!this.props.private) {
-      this.state.clips.map((c) => {
-        if (!c.private)
-          clips.push(<Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />);
-        return null;
-      });
-    } else
-      this.state.clips.map((c) => {
-        if (c.private)
-          clips.push(
-            <Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />
-          );
-        return null;
-      });
+    // create clip and add it to the array
+    var displayedClips = [];
+    var length; var count = 0; var localClips = [];
+
+    // if (this.props.private) localClips = this.state.privateClips;
+    // else localClips = this.state.publicClips;
+
     length = this.state.clips.length
 
-    return <div>
+
+    this.state.clips.map((c, index) => {
+      if (length - 1 == index) {
+        displayedClips.push(
+          <div id="lastClip">
+            <Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />
+          </div>)
+      }
+      else displayedClips.push(<Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />)
+    })
+
+    return <main>
       <div className='formClip'>
+        <div className='switch'>
+          <Button onClick={this.handleClick.bind(this, 1)} variant="primary">public</Button>{' '}
+          <Button onClick={this.handleClick.bind(this, 2)} variant="primary">private</Button>{' '}
+          <Button onClick={this.handleClick.bind(this, 3)} variant="secondary">socket</Button>{' '}
+        </div>
         <div className='imageUpload'>
           <Grid container spacing={3}>
             <Grid item xs={3}>
@@ -221,24 +230,23 @@ class Clips extends Component {
               </Button>
               {deleteButton}
             </Grid>
-            {/* <Typography variant="body1" gutterBottom> h4. Heading </Typography> */}
             <Grid item xs={9}>
               {image}
             </Grid>
           </Grid>
         </div>
-
-        {/* <button onClick={this.uploadHandler}> {this.state.buttonText} </button> */}
-        <input onChange={this.handleChange} value={this.state.clipText} type="text" placeholder="clip" />
-
+        <input onChange={this.handleChange} value={this.state.clipText} type="text" placeholder="content" />
         <Checkbox checked={this.state.private} onChange={this.handleCheck} type="checkbox" label={this.state.privateText} />
         <Button variant="contained" onClick={this.handleSubmit}>Submit</Button>
         <Button variant="contained" onClick={this.debug}> debug </Button>
+        <a href="#126">Click Me </a>
+
       </div>
-      <CustomScroller className="clips">
-        clips {length} :{clips}
-      </CustomScroller>
-    </div>;
+
+      <div className="clips">
+        clips {length} : {displayedClips}
+      </div >
+    </main>
   }
 }
 
