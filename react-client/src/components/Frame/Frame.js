@@ -13,8 +13,6 @@ class Frame extends Component {
     };
   }
 
-
-
   componentDidMount() {
     this.updateClips();
   }
@@ -65,6 +63,7 @@ class Frame extends Component {
   render() {
     return (
       <div className="frame-component">
+        <NewClip />
         {/* public
         <Button onClick={this.handleClick.bind(this)} variant="warning">fetch</Button>{' '}
         <Button onClick={this.updateClips} variant="warning">update clips</Button>{' '}

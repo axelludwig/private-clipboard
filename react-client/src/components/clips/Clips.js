@@ -70,6 +70,7 @@ class Clips extends Component {
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
     this.addClip();
+    console.log("ici");
   }
 
   handleCheck = () => {
@@ -207,31 +208,6 @@ class Clips extends Component {
     length = this.state.clips.length
 
     return <div>
-      <NewClip />
-      <div className='formClip'>
-        <div className='imageUpload'>
-          <Grid container spacing={3}>
-            <Grid item xs={3}>
-              <Button color="secondary" variant="contained" component="label" disableElevation >
-                {this.state.buttonText} <input type="file" hidden onClick={event => event.target.value = null} onChange={this.fileChangedHandler} />
-                {/* {this.state.buttonText} <input type="file" hidden on onClick={this.fileClickHandler} onChange={this.fileChangedHandler} /> */}
-              </Button>
-              {deleteButton}
-            </Grid>
-            {/* <Typography variant="body1" gutterBottom> h4. Heading </Typography> */}
-            <Grid item xs={9}>
-              {image}
-            </Grid>
-          </Grid>
-        </div>
-
-        {/* <button onClick={this.uploadHandler}> {this.state.buttonText} </button> */}
-        <input onChange={this.handleChange} value={this.state.clipText} type="text" placeholder="clip" />
-
-        <Checkbox checked={this.state.private} onChange={this.handleCheck} type="checkbox" label={this.state.privateText} />
-        <Button variant="contained" onClick={this.handleSubmit}>Submit</Button>
-        <Button variant="contained" onClick={this.debug}> debug </Button>
-      </div>
       <CustomScroller className="clips">
         clips {length} :{clips}
       </CustomScroller>

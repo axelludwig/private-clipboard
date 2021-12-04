@@ -88,7 +88,6 @@ class NewClip extends Component {
   };
 
   deleteImage = (event) => {
-    console.log("deleted");
     this.setState({
       imagePreview: null,
       selectedFile: null,
@@ -109,31 +108,21 @@ class NewClip extends Component {
 
   uploadHandler = () => {
     const config = {
-      onUploadProgress: (progressEvent) => {
-        let progress =
-          Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%";
-      },
+      onUploadProgress: progressEvent => {
+        let progress = Math.round(progressEvent.loaded / progressEvent.total * 100) + '%';
+      }
     };
-    console.log(this.state.selectedFile);
-    const formData = new FormData();
-    formData.append(
-      "image",
-      this.state.selectedFile,
-      this.state.selectedFile.name
-    );
-    axios.post("http://localhost:8000/image", formData, config);
-  };
+    console.log(this.state.selectedFile)
+    const formData = new FormData()
+    formData.append('image', this.state.selectedFile, this.state.selectedFile.name,)
+    axios.post('http://localhost:8000/image', formData, config);
+  }
 
   render() {
     var image, deleteButton;
     if (null != this.state.imagePreview) {
-      image = <img className="uploaded" src={this.state.imagePreview} />;
-      deleteButton = (
-        <IconButton onClick={this.deleteImage()} aria-label="delete">
-          <DeleteIcon />
-        </IconButton>
-      );
-      // < Button onClick = { this.deleteImage } variant = "outlined" > Default</Button >
+      image = < img className='uploaded' src={this.state.imagePreview} />
+      deleteButton = (<IconButton onClick={this.deleteImage} aria-label="delete"> <DeleteIcon /> </IconButton>)
     }
 
     return (
@@ -184,12 +173,12 @@ class NewClip extends Component {
           <Button variant="contained" onClick={this.debug}>debug</Button>
         </div>
 
-        <div clips>
-          {/* <Clips
+        {/* <div clips>
+          <Clips
             newClip={this.state.newClip}
             private={this.props.private}
-          ></Clips> */}
-        </div>
+          ></Clips>
+        </div> */}
       </div>
     );
   }
