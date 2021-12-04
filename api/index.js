@@ -20,25 +20,29 @@ app.use(express.json()); //Notice express.json middleware
 app.use(fileUpload());
 
 const pool = mariadb.createPool({
-    // host: 'localhost',
-    user: "root",
-    password: "root",
-    database: "clipboard",
-    connectionLimit: 100,
-    // port: 3306
+  // host: 'localhost',
+  user: "root",
+  password: "root",
+  database: "clipboard",
+  connectionLimit: 100,
+  // port: 3306
 });
 
 io.on("connection", (socket) => {
-    console.log("client connected");
-    socket.on("test", () => {
-        console.log("sockets ok");
-        socket.emit("test2", "");
-    });
-    socket.on("update", () => {
-        console.log("update");
-        // socket.emit("test2", "");
-    });
-    socket.on("disconnect", () => console.log("disconnected"));
+  console.log("client connected");
+  socket.on("test", () => {
+    console.log("sockets ok");
+    socket.emit("test2", "");
+  });
+  socket.on("updateAll", () => {
+    console.log("sockets ok");
+    socket.broadcast.emit("update", "");
+  });
+  socket.on("update", () => {
+    console.log("update");
+    // socket.emit("test2", "");
+  });
+  socket.on("disconnect", () => console.log("disconnected"));
 });
 
 app.use(function(req, res, next) {

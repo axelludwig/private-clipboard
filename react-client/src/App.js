@@ -8,7 +8,6 @@ import Private from './components/private/Private'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-
 // const socket = socketIOClient('http://localhost:8001');
 
 class App extends Component {
@@ -49,12 +48,6 @@ class App extends Component {
     return (
       <div className="app">
         {/* {this.state.res} */}
-
-        <div className='switch'>
-          <Button onClick={this.handleClick.bind(this, 1)} variant="primary">public</Button>{' '}
-          <Button onClick={this.handleClick.bind(this, 2)} variant="primary">private</Button>{' '}
-          <Button onClick={this.handleClick.bind(this, 3)} variant="secondary">socket</Button>{' '}
-        </div>
 
         <Switch>
           <Route exact path="/" render={(props) => (
