@@ -3,18 +3,12 @@
   /* margin: 1%; */
   background-color: #303030;
   color: white;
-  /* margin: 2% 15% 2% 15%; */
-  margin: 2% 5% 2% 5%;
-  /* overflow: hidden;  */
-  /* overflow: scroll; */
+  margin: 2% 15% 2% 15%;
+  overflow: hidden; /* Hide scrollbars */
 }
 
 .switch {
   /* margin-bottom: 5%; */
-}
-
-body {
-  z-index: 1;
 }
 
 html {

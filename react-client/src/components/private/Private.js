@@ -50,6 +50,7 @@ class Private extends Component {
   render() {
     return (
       <div>
+        private
         <Clips private={true} />
       </div>
 

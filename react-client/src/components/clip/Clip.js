@@ -60,7 +60,6 @@ class Clip extends Component {
 
   render() {
     // var image = <Image src="http://localhost:8000/image/${this.state.imagesrc}" fluid />
-    if (this.state.imagesrc) var image = <Image className="image" src={"http://localhost:8000/images/" + this.state.imagesrc} fluid />
     var image = (
       <Image
         src={"http://localhost:8000/images/" + this.state.imagesrc}
@@ -69,8 +68,6 @@ class Clip extends Component {
     );
 
     return (
-      // <div className='clip' id={this.state.id}>
-      <div className='clip' id={this.state.id}>
       <div className="clip" id={this.state.id}>
         <Container>
           <Row>
@@ -95,9 +92,7 @@ class Clip extends Component {
               </IconButton>{" "}
             </Col>
           </Row>
-          <div className="imagecontainer">
-            {image}
-          </div>
+          {image}
         </Container>
       </div>
     );

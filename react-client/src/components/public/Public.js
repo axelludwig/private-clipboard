@@ -75,7 +75,18 @@ class Public extends Component {
   }
 
   render() {
-    return (< Clips private={false} />);
+    return (
+      <div>
+        {/* public
+        <Button onClick={this.handleClick.bind(this)} variant="warning">fetch</Button>{' '}
+        <Button onClick={this.updateClips} variant="warning">update clips</Button>{' '}
+        <Button onClick={this.debug} variant="warning">debug</Button>{' '} */}
+
+        <Clips private={false} />
+        {/* <Clips private={true}></Clips> */}
+      </div>
+
+    );
   }
 }
 
