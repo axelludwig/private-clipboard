@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./NewClip.css";
 import socketIOClient from "socket.io-client";
-import Clips from "../clips/Clips";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 
+import Clip from "../clip/Clip";
+import "../clips/Clips";
 // import { Button, Form, Container, Row, Col, } from 'react-bootstrap';
 import { Switch, Button, IconButton, Checkbox, Grid } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
-const socket = socketIOClient("http://localhost:8001");
+
+
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
+const socket = socketIOClient("http://localhost:8001");
 
 // socket.on("connection", (socket) => {
 //   console.log("client connected");
@@ -40,7 +41,7 @@ class NewClip extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
@@ -69,6 +70,7 @@ class NewClip extends Component {
       .catch((error) => {
         console.error(error);
       });
+    this.deleteImage();
   };
 
   handleCheck = () => {
@@ -86,6 +88,7 @@ class NewClip extends Component {
   };
 
   deleteImage = (event) => {
+    console.log("deleted");
     this.setState({
       imagePreview: null,
       selectedFile: null,
@@ -126,9 +129,8 @@ class NewClip extends Component {
     if (null != this.state.imagePreview) {
       image = <img className="uploaded" src={this.state.imagePreview} />;
       deleteButton = (
-        <IconButton onClick={this.deleteImage} aria-label="delete">
-          {" "}
-          <DeleteIcon />{" "}
+        <IconButton onClick={this.deleteImage()} aria-label="delete">
+          <DeleteIcon />
         </IconButton>
       );
       // < Button onClick = { this.deleteImage } variant = "outlined" > Default</Button >
@@ -178,20 +180,15 @@ class NewClip extends Component {
             type="checkbox"
             label={this.state.privateText}
           />
-          <Button variant="contained" onClick={this.handleSubmit}>
-            Submit
-          </Button>
-          <Button variant="contained" onClick={this.debug}>
-            {" "}
-            debug{" "}
-          </Button>
+          <Button variant="contained" onClick={this.handleSubmit}>Submit</Button>
+          <Button variant="contained" onClick={this.debug}>debug</Button>
         </div>
 
         <div clips>
-          <Clips
+          {/* <Clips
             newClip={this.state.newClip}
             private={this.props.private}
-          ></Clips>
+          ></Clips> */}
         </div>
       </div>
     );

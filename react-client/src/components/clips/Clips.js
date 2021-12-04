@@ -14,6 +14,7 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import CustomScroller from 'react-custom-scroller';
+import NewClip from "../newclip/NewClip";
 
 const socket = socketIOClient("http://localhost:8001");
 
@@ -29,7 +30,8 @@ class Clips extends Component {
       imagePreview: null,
       buttonText: 'Upload File!',
       backupFile: null,
-      fileName: null
+      fileName: null,
+      newClip: null,
     };
 
     socket.on("update", () => {
@@ -116,17 +118,11 @@ class Clips extends Component {
 
   componentDidMount() {
     this.updateClips();
-    console.log('ok');
+    console.log(this.props);
   }
 
   componentDidUpdate() {
-    // console.log(this.props.newClip);
-    // console.log(this.state.lastNewClip);
-    // if (!null == this.props.newClip && this.state.lastNewClip != this.props.newClip) {
-    //   console.log('rerender');
-
   }
-  // this.updateClips();
 
   deteleClip(id) {
     var array = this.state.clips.filter((item) => { return item.id != id })
@@ -211,6 +207,7 @@ class Clips extends Component {
     length = this.state.clips.length
 
     return <div>
+      <NewClip />
       <div className='formClip'>
         <div className='imageUpload'>
           <Grid container spacing={3}>

@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { BrowserRouter as Switch, Route } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 
-import Public from './components/public/Public'
-import Private from './components/private/Private'
+import Public from './components/Public/Public'
+import Private from './components/Private/Private'
+import Frame from './components/Frame/Frame'
 
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -58,12 +59,14 @@ class App extends Component {
 
         <Switch>
           <Route exact path="/" render={(props) => (
-            <Public {...props}
-            //  propssocket={socket} 
-            />
-          )} />
+            <Frame {...props}
+             context="public" 
+             //  propssocket={socket} 
+             />
+             )} />
           <Route path="/private" render={(props) => (
-            <Private {...props}
+            <Frame {...props}
+            context="private" 
             //  propssocket={socket} 
             />
           )} />
