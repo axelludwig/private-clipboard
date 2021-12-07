@@ -58,6 +58,8 @@ class Clip extends Component {
 
   componentDidMount() {}
 
+  handleContentClick() {}
+
   deleteButton = (id) => {
     this.props.deleteClipEvent(id);
   };
@@ -77,7 +79,12 @@ class Clip extends Component {
     return (
       <div className="clip" id={this.state.id}>
         <Grid className="grid" container spacing={0}>
-          <Grid item xs={6}>
+          <Grid
+            className="content"
+            item
+            xs={6}
+            onClick={() => this.handleContentClick()}
+          >
             Content : {this.state.content}
           </Grid>
           <Grid item xs={5}>

@@ -13,11 +13,16 @@
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .grid {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.content {
+  cursor: pointer;
 }
