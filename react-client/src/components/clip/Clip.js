@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Moment from "react-moment";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -14,6 +15,7 @@ import {
   Typography,
   Grid,
   Paper,
+  Item,
 } from "@material-ui/core";
 
 import { styled } from "@mui/material/styles";
@@ -39,6 +41,8 @@ import "./Clip.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import Image from "react-bootstrap/Image";
 
+const axios = require("axios");
+
 class Clip extends Component {
   constructor(props) {
     super(props);
@@ -54,46 +58,50 @@ class Clip extends Component {
 
   componentDidMount() {}
 
+  handleContentClick() {}
+
   deleteButton = (id) => {
     this.props.deleteClipEvent(id);
   };
 
   render() {
-    // var image = <Image src="http://localhost:8000/image/${this.state.imagesrc}" fluid />
-    var image = (
-      <Image
-        src={"http://localhost:8000/images/" + this.state.imagesrc}
-        fluid
-      />
-    );
+    let image;
+    if (this.state.imagesrc != "null") {
+      image = (
+        <Image
+          src={"http://localhost:8000/images/" + this.state.imagesrc}
+          fluid
+          className="image"
+        />
+      );
+    }
 
     return (
       <div className="clip" id={this.state.id}>
-        <Container>
-          <Row>
-            <Col sm={4}> Content : {this.state.content} </Col>
-            <Col sm={4}>
-              private :{" "}
-              <Form.Check
-                readOnly
-                checked={this.state.private}
-                type="checkbox"
-              />
-            </Col>
-            <Col sm={3}> {this.state.postDate} </Col>
-            <Col sm={1}>
-              {" "}
-              <IconButton
-                onClick={() => this.deleteButton(this.state.id)}
-                aria-label="delete"
-              >
-                {" "}
-                <DeleteIcon />{" "}
-              </IconButton>{" "}
-            </Col>
-          </Row>
-          {image}
-        </Container>
+        <Grid className="grid" container spacing={0}>
+          <Grid
+            className="content"
+            item
+            xs={6}
+            onClick={() => this.handleContentClick()}
+          >
+            Content : {this.state.content}
+          </Grid>
+          <Grid item xs={5}>
+            <Moment format="MMMM Do YYYY, h:mm:ss a">
+              {this.state.postDate}
+            </Moment>
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton
+              onClick={() => this.deleteButton(this.state.id)}
+              aria-label="delete"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+        {image}
       </div>
     );
   }

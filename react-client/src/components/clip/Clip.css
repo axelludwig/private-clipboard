@@ -1,0 +1,28 @@
+.clip {
+  border: red 1px solid;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+
+  /* text-align: center; */
+  /* display: table-cell; */
+  /* vertical-align: middle; */
+}
+
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  cursor: pointer;
+}

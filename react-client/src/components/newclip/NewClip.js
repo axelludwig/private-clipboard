@@ -2,15 +2,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 
-
 import Clip from "../clip/Clip";
 import "../clips/Clips";
 // import { Button, Form, Container, Row, Col, } from 'react-bootstrap';
 import { Switch, Button, IconButton, Checkbox, Grid } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
-
-
 
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const socket = socketIOClient("http://localhost:8001");
@@ -41,7 +38,7 @@ class NewClip extends Component {
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
@@ -108,21 +105,30 @@ class NewClip extends Component {
 
   uploadHandler = () => {
     const config = {
-      onUploadProgress: progressEvent => {
-        let progress = Math.round(progressEvent.loaded / progressEvent.total * 100) + '%';
-      }
+      onUploadProgress: (progressEvent) => {
+        let progress =
+          Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%";
+      },
     };
-    console.log(this.state.selectedFile)
-    const formData = new FormData()
-    formData.append('image', this.state.selectedFile, this.state.selectedFile.name,)
-    axios.post('http://localhost:8000/image', formData, config);
-  }
+    console.log(this.state.selectedFile);
+    const formData = new FormData();
+    formData.append(
+      "image",
+      this.state.selectedFile,
+      this.state.selectedFile.name
+    );
+    axios.post("http://localhost:8000/image", formData, config);
+  };
 
   render() {
     var image, deleteButton;
     if (null != this.state.imagePreview) {
-      image = < img className='uploaded' src={this.state.imagePreview} />
-      deleteButton = (<IconButton onClick={this.deleteImage} aria-label="delete"> <DeleteIcon /> </IconButton>)
+      image = <img className="uploaded" src={this.state.imagePreview} />;
+      deleteButton = (
+        <IconButton onClick={this.deleteImage} aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+      );
     }
 
     return (
@@ -131,13 +137,8 @@ class NewClip extends Component {
           <div className="imageUpload">
             <Grid container spacing={3}>
               <Grid item xs={3}>
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  component="label"
-                  disableElevation
-                >
-                  {this.state.buttonText}{" "}
+                <Button variant="contained" component="label" disableElevation>
+                  {this.state.buttonText}
                   <input
                     type="file"
                     hidden
@@ -160,7 +161,7 @@ class NewClip extends Component {
             onChange={this.handleChange}
             value={this.state.clipText}
             type="text"
-            placeholder="clip"
+            placeholder="text content"
           />
 
           <Checkbox
@@ -169,8 +170,12 @@ class NewClip extends Component {
             type="checkbox"
             label={this.state.privateText}
           />
-          <Button variant="contained" onClick={this.handleSubmit}>Submit</Button>
-          <Button variant="contained" onClick={this.debug}>debug</Button>
+          <Button variant="contained" onClick={this.handleSubmit}>
+            Submit
+          </Button>
+          <Button variant="contained" onClick={this.debug}>
+            debug
+          </Button>
         </div>
 
         {/* <div clips>
