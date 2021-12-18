@@ -49,13 +49,15 @@ app.use(function(req, res, next) {
 });
 
 app.get("/clips", function(req, res) {
+    let private = req.query.access == "private" ? 1 : 0
+    let query = "SELECT * from Clips WHERE private = " + private;
     // const body = req.query;
     // console.log(body);
     pool
         .getConnection()
         .then((conn) => {
             conn
-                .query("SELECT * from Clips")
+                .query(query)
                 .then((rows) => {
                     var array = [];
                     rows.map((t) => array.push(t));

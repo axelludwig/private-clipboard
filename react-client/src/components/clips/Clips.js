@@ -9,12 +9,14 @@ import {
   Button,
   IconButton,
   Checkbox,
-  Grid,
+  Grid
 } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
 import CustomScroller from 'react-custom-scroller';
 import NewClip from "../newclip/NewClip";
+import Divider from "../Divider/Divider";
+import { border, borderColor } from "@mui/system";
 
 const socket = socketIOClient("http://localhost:8001");
 
@@ -25,7 +27,6 @@ class Clips extends Component {
       clips: [],
       clipText: '',
       private: false,
-      privateText: 'public',
       selectedFile: null,
       imagePreview: null,
       buttonText: 'Upload File!',
@@ -58,9 +59,7 @@ class Clips extends Component {
         json.id = res.id;
         var array = this.state.clips;
         array.push(json)
-        this.setState({
-          clips: array
-        })
+        this.setState({ clips: array })
       })
       .catch((error) => {
         console.error(error);
@@ -70,12 +69,11 @@ class Clips extends Component {
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
     this.addClip();
-    console.log("ici");
   }
 
   handleCheck = () => {
-    if (this.state.private) this.setState({ private: false, privateText: 'public' })
-    else this.setState({ private: true, privateText: 'private' })
+    if (this.state.private) this.setState({ private: false })
+    else this.setState({ private: true })
   }
 
   debug = () => {
@@ -119,7 +117,6 @@ class Clips extends Component {
 
   componentDidMount() {
     this.updateClips();
-    console.log(this.props);
   }
 
   componentDidUpdate() {
@@ -144,10 +141,9 @@ class Clips extends Component {
       });
   }
 
-
-
   updateClips = () => {
-    fetch("http://localhost:8000/clips", {
+    let access = this.props.private ? "private" : "public";
+    fetch("http://localhost:8000/clips?access=" + access, {
       crossDomain: true,
       method: "GET",
       headers: {
@@ -181,35 +177,20 @@ class Clips extends Component {
   };
 
   render() {
-
-    var image, deleteButton;
-    if (null != this.state.imagePreview) {
-      image = < img className='uploaded' src={this.state.imagePreview} />
-      deleteButton = (<IconButton onClick={this.deleteImage} aria-label="delete"> <DeleteIcon /> </IconButton>)
-      // < Button onClick = { this.deleteImage } variant = "outlined" > Default</Button >
-    }
-
-    var clips = [];
-    var length;
-    if (!this.props.private) {
-      this.state.clips.map((c) => {
-        if (!c.private)
-          clips.push(<Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />);
-        return null;
-      });
-    } else
-      this.state.clips.map((c) => {
-        if (c.private)
-          clips.push(
-            <Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />
-          );
-        return null;
-      });
-    length = this.state.clips.length
+    let domClips = [];
+    this.state.clips.map((c) => {
+      domClips.push(
+        <span key={c.id}>
+          <Clip deleteClipEvent={this.deleteClipEvent} raw={c} key={c.id} />
+          <Divider />
+        </span>
+      );
+      return null;
+    });
 
     return <div>
       <CustomScroller className="clips">
-        clips {length} :{clips}
+        clips : {this.state.clips.length} {domClips}
       </CustomScroller>
     </div>;
   }

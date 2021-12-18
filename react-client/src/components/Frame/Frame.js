@@ -70,7 +70,6 @@ class Frame extends Component {
         <Button onClick={this.debug} variant="warning">debug</Button>{' '} */}
 
         <Clips private={this.state.private} />
-        {/* <Clips private={true}></Clips> */}
       </div>
     );
   }
