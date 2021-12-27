@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { Link, BrowserRouter as Switch, Route } from "react-router-dom";
 
-import Public from "./components/Public/Public";
-import Private from "./components/Private/Private";
-import Frame from "./components/Frame/Frame";
+import Frame from "./components/Frame/FrameFunction";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,8 +16,6 @@ import {
   Checkbox,
   Grid,
 } from "@material-ui/core";
-
-// const socket = socketIOClient('http://localhost:8001');
 
 const ColorButton = styled(Button)(({ theme }) => ({
   color: theme.palette.getContrastText(purple[500]),
@@ -55,7 +51,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
+      <div className="app-component">
         <Switch>
           <ButtonGroup aria-label="outlined button group">
             <ColorButton component={Link} to="/" variant="contained">

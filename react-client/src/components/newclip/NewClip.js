@@ -2,10 +2,19 @@ import React, { Component } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 
-import Clip from "../clip/Clip";
 import "../clips/Clips";
 // import { Button, Form, Container, Row, Col, } from 'react-bootstrap';
-import { Switch, Button, IconButton, Checkbox, Grid, Divider } from "@material-ui/core";
+import {
+  Switch,
+  Button,
+  IconButton,
+  Checkbox,
+  Grid,
+  Divider,
+  FormGroup,
+} from "@material-ui/core";
+import { alpha, styled } from "@mui/material/styles";
+import { pink } from "@mui/material/colors";
 import DeleteIcon from "@material-ui/icons/Delete";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
 
@@ -38,7 +47,7 @@ class NewClip extends Component {
     };
   }
 
-  componentDidMount() { }
+  componentDidMount() {}
 
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
@@ -149,7 +158,6 @@ class NewClip extends Component {
                 </Button>
                 {deleteButton}
               </Grid>
-              {/* <Typography variant="body1" gutterBottom> h4. Heading </Typography> */}
               <Grid item xs={9}>
                 {image}
               </Grid>
@@ -164,6 +172,9 @@ class NewClip extends Component {
             placeholder="text content"
           />
 
+          {/* <FormGroup>
+            <PinkSwitch {...label} label="Label" />
+          </FormGroup> */}
           <Checkbox
             checked={this.state.private}
             onChange={this.handleCheck}
@@ -176,7 +187,7 @@ class NewClip extends Component {
           <Button variant="contained" onClick={this.debug}>
             debug
           </Button>
-        </div>     
+        </div>
       </div>
     );
   }

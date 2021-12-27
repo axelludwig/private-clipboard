@@ -1,45 +1,13 @@
 import React, { Component } from "react";
 import Moment from "react-moment";
+import moment from "moment";
+import { IconButton, Tooltip, Grid } from "@material-ui/core";
 
-import "bootstrap/dist/css/bootstrap.min.css";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-// import { Button, Form, Container, Row, Col, } from 'react-bootstrap';
-import {
-  Button,
-  IconButton,
-  Switch,
-  Tooltip,
-  makeStyles,
-  Theme,
-  Checkbox,
-  Typography,
-  Grid,
-  Paper,
-  Item,
-} from "@material-ui/core";
-
-import { styled } from "@mui/material/styles";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-import DeleteIcon from "@material-ui/icons/Delete";
-
-import { PhotoCamera } from "@material-ui/icons";
-
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./Clip.css";
-import { Container, Row, Col, Form } from "react-bootstrap";
-import Image from "react-bootstrap/Image";
+import Image from "mui-image";
 
 const axios = require("axios");
 
@@ -52,8 +20,12 @@ class Clip extends Component {
       content: raw.content,
       private: raw.private,
       postDate: raw.time,
+      postDateMoment: "",
       imagesrc: raw.imagesrc,
     };
+    this.state.postDateMoment = moment(this.state.postDate).format(
+      "MMMM Do YYYY, h:mm:ss a"
+    );
   }
 
   componentDidMount() {}
@@ -64,14 +36,20 @@ class Clip extends Component {
     this.props.deleteClipEvent(id);
   };
 
+  download = (url) => {
+    window.location.replace("http://localhost:8000/images/" + url);
+  };
+
   render() {
     let image;
     if (this.state.imagesrc != "null") {
       image = (
         <Image
           src={"http://localhost:8000/images/" + this.state.imagesrc}
-          fluid
           className="image"
+          shift="top"
+          distance="2rem"
+          shiftDuration={320}
         />
       );
     }
@@ -79,26 +57,35 @@ class Clip extends Component {
     return (
       <div className="clip" id={this.state.id}>
         <Grid className="grid" container spacing={0}>
-          <Grid
-            className="content"
-            item
-            xs={6}
-            onClick={() => this.handleContentClick()}
-          >
-            Content : {this.state.content}
+          <Grid item xs={8} onClick={() => this.handleContentClick()}>
+            <Tooltip title="Copy content to clipboard">
+              <div className="content">{this.state.content}</div>
+            </Tooltip>
           </Grid>
-          <Grid item xs={5}>
-            <Moment format="MMMM Do YYYY, h:mm:ss a">
-              {this.state.postDate}
-            </Moment>
+          <Grid className="date" item xs={2}>
+            <Tooltip title={this.state.postDateMoment}>
+              <Moment format="DD/MM/YYYY">{this.state.postDate}</Moment>
+            </Tooltip>
           </Grid>
           <Grid item xs={1}>
-            <IconButton
-              onClick={() => this.deleteButton(this.state.id)}
-              aria-label="delete"
-            >
-              <DeleteIcon />
-            </IconButton>
+            <Tooltip title="Download image">
+              <IconButton
+                onClick={() => this.download(this.state.imagesrc)}
+                aria-label="delete"
+              >
+                <CloudDownloadIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item xs={1}>
+            <Tooltip title="Delete">
+              <IconButton
+                onClick={() => this.deleteButton(this.state.id)}
+                aria-label="delete"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
         {image}

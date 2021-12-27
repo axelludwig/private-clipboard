@@ -1,20 +1,14 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
-import axios from 'axios';
+import axios from "axios";
 
 import Clip from "../clip/Clip";
 import "./Clips.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  Button,
-  IconButton,
-  Checkbox,
-  Grid
-} from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Button, IconButton, Checkbox, Grid } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-import CustomScroller from 'react-custom-scroller';
-import NewClip from "../newclip/NewClip";
+import CustomScroller from "react-custom-scroller";
 import Divider from "../Divider/Divider";
 import { border, borderColor } from "@mui/system";
 
@@ -25,11 +19,11 @@ class Clips extends Component {
     super(props);
     this.state = {
       clips: [],
-      clipText: '',
+      clipText: "",
       private: false,
       selectedFile: null,
       imagePreview: null,
-      buttonText: 'Upload File!',
+      buttonText: "Upload File!",
       backupFile: null,
       fileName: null,
       newClip: null,
@@ -44,22 +38,24 @@ class Clips extends Component {
     var json = {
       content: this.state.clipText,
       private: this.state.private,
-      imagesrc: this.state.fileName
-    }
+      imagesrc: this.state.fileName,
+    };
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(json)
+      body: JSON.stringify(json),
     })
-      .then((res) => { return res.json(); })
+      .then((res) => {
+        return res.json();
+      })
       .then((res) => {
         json.id = res.id;
         var array = this.state.clips;
-        array.push(json)
-        this.setState({ clips: array })
+        array.push(json);
+        this.setState({ clips: array });
       })
       .catch((error) => {
         console.error(error);
@@ -69,61 +65,67 @@ class Clips extends Component {
   handleSubmit = () => {
     if (null != this.state.selectedFile) this.uploadHandler();
     this.addClip();
-  }
+  };
 
   handleCheck = () => {
-    if (this.state.private) this.setState({ private: false })
-    else this.setState({ private: true })
-  }
+    if (this.state.private) this.setState({ private: false });
+    else this.setState({ private: true });
+  };
 
   debug = () => {
     console.log(this.state.selectedFile);
-  }
+  };
 
   handleChange = (event) => {
-    this.setState({ clipText: event.target.value })
-  }
+    this.setState({ clipText: event.target.value });
+  };
 
   deleteImage = (event) => {
     this.setState({
       imagePreview: null,
       selectedFile: null,
-      buttonText: 'Upload File'
-    })
-  }
+      buttonText: "Upload File",
+    });
+  };
 
   fileChangedHandler = (event) => {
-    const file = event.target.files[0]
+    const file = event.target.files[0];
     this.setState({
       backupFile: event.target.files[0],
       selectedFile: event.target.files[0],
       imagePreview: URL.createObjectURL(event.target.files[0]),
       buttonText: event.target.files[0].name,
-      fileName: event.target.files[0].name
-    })
-  }
+      fileName: event.target.files[0].name,
+    });
+  };
 
   uploadHandler = () => {
     const config = {
-      onUploadProgress: progressEvent => {
-        let progress = Math.round(progressEvent.loaded / progressEvent.total * 100) + '%';
-      }
+      onUploadProgress: (progressEvent) => {
+        let progress =
+          Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%";
+      },
     };
-    console.log(this.state.selectedFile)
-    const formData = new FormData()
-    formData.append('image', this.state.selectedFile, this.state.selectedFile.name,)
-    axios.post('http://localhost:8000/image', formData, config);
-  }
+    console.log(this.state.selectedFile);
+    const formData = new FormData();
+    formData.append(
+      "image",
+      this.state.selectedFile,
+      this.state.selectedFile.name
+    );
+    axios.post("http://localhost:8000/image", formData, config);
+  };
 
   componentDidMount() {
     this.updateClips();
   }
 
-  componentDidUpdate() {
-  }
+  componentDidUpdate() {}
 
   deteleClip(id) {
-    var array = this.state.clips.filter((item) => { return item.id != id })
+    var array = this.state.clips.filter((item) => {
+      return item.id != id;
+    });
     this.setState({ clips: array });
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
@@ -135,10 +137,9 @@ class Clips extends Component {
       body: JSON.stringify({
         id: id,
       }),
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+    }).catch((error) => {
+      console.error(error);
+    });
   }
 
   updateClips = () => {
@@ -188,11 +189,13 @@ class Clips extends Component {
       return null;
     });
 
-    return <div>
-      <CustomScroller className="clips">
-        clips : {this.state.clips.length} {domClips}
-      </CustomScroller>
-    </div>;
+    return (
+      <div>
+        <CustomScroller className="clips">
+          clips : {this.state.clips.length} {domClips}
+        </CustomScroller>
+      </div>
+    );
   }
 }
 

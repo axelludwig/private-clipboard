@@ -6,8 +6,9 @@
   /* max-height: 50% !important; */
 }
 
-.formClip {
+.newClip-component {
   z-index: 100000 !important;
+  /* padding: 2vh 2vw 2vh 2vw; */
 }
 
 .uploaded:hover {
@@ -25,6 +26,6 @@
 
 .imageUpload {
   background-position: 10px -185px;
-  /* max-height: 200px !important;
-    border: 5px solid red; */
+  /* max-height: 200px !important; */
+  /* border: 5px solid red;  */
 }

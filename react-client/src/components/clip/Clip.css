@@ -11,10 +11,13 @@
 
 .image {
   display: block;
+}
+
+.clip {
   margin-left: auto;
   margin-right: auto;
-  max-width: 100%;
   height: auto;
+  max-width: 80%;
 }
 
 .grid {
@@ -25,4 +28,19 @@
 
 .content {
   cursor: pointer;
+  /* border: solid green 1px; */
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.date {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+p {
+  margin: 0;
+  word-break: break-all;
 }
