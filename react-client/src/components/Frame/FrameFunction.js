@@ -5,7 +5,7 @@ import Clips from "../clips/Clips";
 
 function Frame(props) {
   const [isPrivate] = useState(props.context == "private" ? true : false);
-  const [childData, setChildData] = useState("");
+  const [childData, setChildData] = useState(null);
 
   useEffect(() => {
     if (childData != "") console.log(childData, '- Has changed')
@@ -13,7 +13,7 @@ function Frame(props) {
 
   return (
     <div className="frame-component">
-      <NewClip passChildData={setChildData} />
+      <NewClip private={isPrivate} passChildData={setChildData} />
       <Clips private={isPrivate} newClipProps={childData} />
     </div>
   );

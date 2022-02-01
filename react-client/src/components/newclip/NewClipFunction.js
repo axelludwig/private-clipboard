@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import socketIOClient from "socket.io-client";
-
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 
 import "./NewClip.css";
 
-import { Switch, Button, IconButton, Checkbox, Grid } from "@material-ui/core";
+import { Switch, Button, IconButton, Grid } from "@material-ui/core";
 import { alpha, styled } from "@mui/material/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { FormGroup, FormControlLabel } from "@mui/material";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
 
 // const socket = socketIOClient("http://localhost:8001");
@@ -98,11 +93,11 @@ function NewClip(props) {
 
   const fileChangedHandler = (event) => {
     const file = event.target.files[0];
-    setBackupFile(event.target.files[0]);
-    setSelectedFile(event.target.files[0]);
-    setImagePreview(URL.createObjectURL(event.target.files[0]));
-    setButtonText(event.target.files[0].name);
-    setFileName(event.target.files[0].name);
+    setBackupFile(file);
+    setSelectedFile(file);
+    setImagePreview(URL.createObjectURL(file));
+    setButtonText(file.name);
+    setFileName(file.name);
   };
 
   const uploadHandler = () => {
