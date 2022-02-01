@@ -26,16 +26,17 @@ class Clips extends Component {
       buttonText: "Upload File!",
       backupFile: null,
       fileName: null,
-      newClip: null,
+      newClip: props.newClipProps,
     };
 
     socket.on("update", () => {
+      console.log("updatet");
       this.updateClips();
     });
   }
 
   addClip() {
-    var json = {
+    let json = {
       content: this.state.clipText,
       private: this.state.private,
       imagesrc: this.state.fileName,
@@ -53,7 +54,7 @@ class Clips extends Component {
       })
       .then((res) => {
         json.id = res.id;
-        var array = this.state.clips;
+        let array = this.state.clips;
         array.push(json);
         this.setState({ clips: array });
       })
@@ -120,10 +121,29 @@ class Clips extends Component {
     this.updateClips();
   }
 
-  componentDidUpdate() {}
+  componentWillReceiveProps(nextProps) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if (nextProps.newClipProps !== this.state.newClip) {
+      this.setState({ newClip: nextProps.newClipProps });
+    }
+  }
+
+  componentDidUpdate() {
+    let c = this.state.newClip;
+    console.log(this.state.private);
+    if (c != "") {
+
+      // this.state.newClip = this.props.newClipProps
+      // let object = JSON.parse(this.state.newClip)
+      if (this.state.newClip.private == this.state.private) {
+        this.setState({ clips: [...this.state.clips, this.state.newClip] })
+        console.table(this.state.clips);
+      }
+    }
+  }
 
   deteleClip(id) {
-    var array = this.state.clips.filter((item) => {
+    let array = this.state.clips.filter((item) => {
       return item.id != id;
     });
     this.setState({ clips: array });

@@ -18,10 +18,13 @@ import {
 } from "@material-ui/core";
 
 const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText(purple[500]),
+  flex: "auto",
+  width: "50%",
+  color: "#ffffff",
   backgroundColor: "#9966ff",
   "&:hover": {
     backgroundColor: "#BA97FF",
+    color: "#000000"
   },
 }));
 

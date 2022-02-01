@@ -4,7 +4,8 @@
   background-color: #303030;
   color: white;
   margin: 3vh 15vw 3vh 15vw;
-  overflow: hidden; /* Hide scrollbars */
+  overflow: hidden;
+  /* Hide scrollbars */
   /* padding: 2vh 2vw 0 2vw; */
   border: solid rgba(15, 15, 15, 0.562) 1px;
 }
@@ -13,5 +14,4 @@
   /* margin-bottom: 5%; */
 }
 
-html {
-}
+html {}

@@ -13,8 +13,13 @@ const io = socketIo(server);
 const apiport = 8000;
 const port = 8001;
 
+// const cors = require('cors');
+
 app.use(express.json());
 io.origins("*:*");
+// app.use(cors({
+//   origin: '*'
+// }));
 
 app.use(express.json()); //Notice express.json middleware
 app.use(fileUpload());
@@ -38,11 +43,12 @@ io.on("connection", (socket) => {
     console.log("update");
     // socket.emit("test2", "");
   });
-  socket.on("disconnect", () => console.log("disconnected"));
+  socket.on("disconnect", () => console.log("disconnected" + "\n"));
 });
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  // res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header(
     "Access-Control-Allow-Headers",
@@ -131,7 +137,7 @@ app.get("/images/:id", function (req, res) {
   var path = __dirname + "\\images\\" + req.params.id + "";
   try {
     if (fs.existsSync(path)) res.sendFile(path);
-  } catch {}
+  } catch { }
   // var jpg = __dirname + '\\images\\' + req.params.id + '.jpg';
   // var png = __dirname + '\\images\\' + req.params.id + '.png';
   // var found = false;

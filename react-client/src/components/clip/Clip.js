@@ -14,6 +14,7 @@ const axios = require("axios");
 class Clip extends Component {
   constructor(props) {
     super(props);
+    let newClip = this.props.newClipProps;
     let raw = this.props.raw;
     this.state = {
       id: raw.id,
@@ -27,6 +28,8 @@ class Clip extends Component {
       "MMMM Do YYYY, h:mm:ss a"
     );
   }
+
+  
 
   componentDidMount() {}
 

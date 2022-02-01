@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
 
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+
 import "./NewClip.css";
 
 import { Switch, Button, IconButton, Checkbox, Grid } from "@material-ui/core";
 import { alpha, styled } from "@mui/material/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { FormGroup, FormControlLabel } from "@mui/material";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
 
-const socket = socketIOClient("http://localhost:8001");
+// const socket = socketIOClient("http://localhost:8001");
 
 // socket.on("connection", (socket) => {
 //   console.log("client connected");
@@ -30,7 +34,7 @@ function NewClip(props) {
   const [buttonText, setButtonText] = useState("Upload File!");
   const [backupFile, setBackupFile] = useState(null);
   const [fileName, setFileName] = useState();
-  const [newClip, setNewClip] = useState();
+  const [newClip, setNewClip] = useState(props.newClipProp);
 
   const PinkSwitch = styled(Switch)(({ theme }) => ({
     "& .MuiSwitch-switchBase.Mui-checked": {
@@ -45,7 +49,6 @@ function NewClip(props) {
   }));
 
   const handleSubmit = () => {
-    console.log(selectedFile);
     if (null != selectedFile) uploadHandler();
     var json = {
       content: clipText,
@@ -65,7 +68,8 @@ function NewClip(props) {
       })
       .then((res) => {
         json.id = res.id;
-        setNewClip(json);
+        // setNewClip(json);
+        props.passChildData(json);
       })
       .catch((error) => {
         console.error(error);
@@ -73,18 +77,13 @@ function NewClip(props) {
     deleteImage();
   };
 
-  const handleCheck = () => {
-    if (isPrivate) {
-      setIsPrivate(false);
-      setPrivateText("public");
-    } else {
-      setIsPrivate(true);
-      setPrivateText("pribate");
-    }
+  const handleCheck = (e) => {
+    setIsPrivate(e.target.checked);
+    setPrivateText(e.target.checked ? "private" : "public");
   };
 
   const debug = () => {
-    console.log(selectedFile);
+    // console.log(selectedFile);    
   };
 
   const handleChange = (event) => {
@@ -131,7 +130,7 @@ function NewClip(props) {
   }
 
   // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {});
+  // useEffect(() => { });
 
   return (
     <div className="newClip-component">
@@ -154,24 +153,22 @@ function NewClip(props) {
           </Grid>
         </Grid>
       </div>
+
       <input
         onChange={handleChange}
         value={clipText}
         type="text"
         placeholder="text content"
       />
+      <PinkSwitch onChange={handleCheck} checked={isPrivate} />
+      <div>
+        {privateText}
+      </div>
 
-      <PinkSwitch label="Label" />
-
-      <Checkbox
-        checked={isPrivate}
-        onChange={handleCheck}
-        type="checkbox"
-        label={privateText}
-      />
       <Button variant="contained" onClick={handleSubmit}>
         Submit
       </Button>
+      <Button color="secondary">Secondary</Button>
       <Button variant="contained" onClick={debug}>
         debug
       </Button>
