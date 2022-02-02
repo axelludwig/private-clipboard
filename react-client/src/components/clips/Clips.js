@@ -24,8 +24,9 @@ class Clips extends Component {
     });
   }
 
-
   componentDidMount() {
+    document.body.style.backgroundColor = "#212121";
+
     this.fetchClips();
   }
 
@@ -34,25 +35,8 @@ class Clips extends Component {
     if (nextProps.newClipProps !== this.state.newClip) {
       if (this.state.newClip == null || this.state.newClip.private == this.state.private) {
         this.updateClips(this.state.clips, nextProps.newClipProps)
-
       }
-      // this.setState({ newClip: nextProps.newClipProps });
     }
-  }
-
-  componentDidUpdate() {
-    // let c = this.state.newClip;
-    // console.log(this.state.private);
-    // if (c != "") {
-
-    //   // this.state.newClip = this.props.newClipProps
-    //   // let object = JSON.parse(this.state.newClip)
-    //   if (this.state.newClip.private == this.state.private) {
-    //     // this.updateClips(this.state.clips, this.state.newClip)
-    //     // this.setState({ clips: [...this.state.clips, this.state.newClip] })    
-    //     console.table(this.state.clips);
-    //   }
-    // }
   }
 
   deteleClip(id) {
@@ -130,11 +114,9 @@ class Clips extends Component {
     });
 
     return (
-      <div>
-        <CustomScroller className="clips">
-          clips : {this.state.clips.length} {domClips}
-        </CustomScroller>
-      </div>
+      <CustomScroller className="clips">
+        clips : {this.state.clips.length} {domClips}
+      </CustomScroller>
     );
   }
 }

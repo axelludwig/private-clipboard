@@ -1,5 +1,8 @@
 .clips {
-  height: calc(100vh - 200px);
+  height: calc(90vh);
+  padding-top: 20vh;
+  /* TODO adapter la taille à la taille du newclip */
+
   /* border: solid 1px rgb(0, 0, 0);
   border-radius: 0.5vw; */
 }

@@ -6,15 +6,10 @@ import Frame from "./components/Frame/FrameFunction";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { styled } from "@mui/material/styles";
-import Stack from "@mui/material/Stack";
-import { purple } from "@mui/material/colors";
 
 import {
   Button,
   ButtonGroup,
-  IconButton,
-  Checkbox,
-  Grid,
 } from "@material-ui/core";
 
 const ColorButton = styled(Button)(({ theme }) => ({
@@ -31,9 +26,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      res: "temp",
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -55,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div className="app-component">
-        <Switch>
+        <Switch className="switch">
           <ButtonGroup aria-label="outlined button group">
             <ColorButton component={Link} to="/" variant="contained">
               public

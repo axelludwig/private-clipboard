@@ -7,10 +7,6 @@ function Frame(props) {
   const [isPrivate] = useState(props.context == "private" ? true : false);
   const [childData, setChildData] = useState(null);
 
-  useEffect(() => {
-    if (childData != "") console.log(childData, '- Has changed')
-  }, [childData]) // <-- here put the parameter to listen
-
   return (
     <div className="frame-component">
       <NewClip private={isPrivate} passChildData={setChildData} />

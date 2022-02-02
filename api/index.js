@@ -1,6 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const mariadb = require("mariadb");
+const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const socketIo = require("socket.io");
@@ -134,9 +135,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/images/:id", function (req, res) {
-  var path = __dirname + "\\images\\" + req.params.id + "";
+  var fullpath = path.join(__dirname, "\\images\\", req.params.id);
+  let extension = req.params.id.split('.')[2]
   try {
-    if (fs.existsSync(path)) res.sendFile(path);
+    if (fs.existsSync(fullpath)) {
+      res.set({ 'Content-Type': 'image/' + extension });
+      res.sendFile(fullpath);
+    }
   } catch { }
   // var jpg = __dirname + '\\images\\' + req.params.id + '.jpg';
   // var png = __dirname + '\\images\\' + req.params.id + '.png';
@@ -167,6 +172,7 @@ app.post("/image", function (req, res) {
   if (!req.files) return res.status(500).send({ msg: "file is not found" });
   var file = req.files.image;
 
+  file.name = file.name.replace(/ /g, '_');
   file.mv(__dirname + "/images/" + file.name, function (err) {
     if (err) {
       console.log(err);

@@ -29,32 +29,44 @@ class Clip extends Component {
     );
   }
 
-  
 
-  componentDidMount() {}
 
-  handleContentClick() {}
+  componentDidMount() { }
+
+  handleContentClick() { }
 
   deleteButton = (id) => {
     this.props.deleteClipEvent(id);
   };
 
-  download = (url) => {
-    window.location.replace("http://localhost:8000/images/" + url);
+  download = (filename) => {
+    console.log("http://192.168.1.1:8000/images/" + filename);
+    window.location.replace("http://192.168.1.1:8000/images/" + filename);
   };
 
   render() {
-    let image;
-    if (this.state.imagesrc != "null") {
+    let imageFileName = this.state.imagesrc;
+    let image, doawnloadButton = null;
+    if (imageFileName != "undefined" && imageFileName != "null") {
       image = (
         <Image
-          src={"http://localhost:8000/images/" + this.state.imagesrc}
+          src={"http://localhost:8000/images/" + imageFileName}
           className="image"
           shift="top"
           distance="2rem"
           shiftDuration={320}
         />
       );
+      doawnloadButton = (
+        <Tooltip title="Download image">
+          <IconButton
+            onClick={() => this.download(imageFileName)}
+            aria-label="delete"
+          >
+            <CloudDownloadIcon />
+          </IconButton>
+        </Tooltip >
+      )
     }
 
     return (
@@ -71,14 +83,7 @@ class Clip extends Component {
             </Tooltip>
           </Grid>
           <Grid item xs={1}>
-            <Tooltip title="Download image">
-              <IconButton
-                onClick={() => this.download(this.state.imagesrc)}
-                aria-label="delete"
-              >
-                <CloudDownloadIcon />
-              </IconButton>
-            </Tooltip>
+            {doawnloadButton}
           </Grid>
           <Grid item xs={1}>
             <Tooltip title="Delete">

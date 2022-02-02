@@ -93,11 +93,12 @@ function NewClip(props) {
 
   const fileChangedHandler = (event) => {
     const file = event.target.files[0];
-    setBackupFile(file);
+    let newFileName = file.name.replace(/ /g, '_');
+    // setBackupFile(file);
     setSelectedFile(file);
     setImagePreview(URL.createObjectURL(file));
-    setButtonText(file.name);
-    setFileName(file.name);
+    setButtonText(newFileName);
+    setFileName(newFileName);
   };
 
   const uploadHandler = () => {
@@ -108,8 +109,9 @@ function NewClip(props) {
       },
     };
     console.log(selectedFile);
+    let newFileName = selectedFile.name.replace(/ /g, '_');
     const formData = new FormData();
-    formData.append("image", selectedFile, selectedFile.name);
+    formData.append("image", selectedFile, newFileName);
     axios.post("http://localhost:8000/image", formData, config);
   };
 

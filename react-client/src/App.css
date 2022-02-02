@@ -12,6 +12,7 @@
 
 .switch {
   /* margin-bottom: 5%; */
+  position: fixed;
 }
 
 html {}
