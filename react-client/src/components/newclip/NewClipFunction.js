@@ -132,7 +132,7 @@ function NewClip(props) {
   return (
     <div className="newClip-component">
       <div className="imageUpload">
-        <Grid container spacing={3}>
+        <Grid container >
           <Grid item xs={3}>
             <Button variant="contained" component="label" disableElevation>
               {buttonText}
@@ -158,17 +158,14 @@ function NewClip(props) {
         placeholder="text content"
       />
       <PinkSwitch onChange={handleCheck} checked={isPrivate} />
-      <div>
-        {privateText}
-      </div>
-
-      <Button variant="contained" onClick={handleSubmit}>
+      <Button className="buttonSubmit" variant="contained" onClick={handleSubmit} disableElevation>
         Submit
       </Button>
-      <Button color="secondary">Secondary</Button>
-      <Button variant="contained" onClick={debug}>
-        debug
+        {privateText}
+      <Button className="buttonSubmit" variant="contained" onClick={handleSubmit} disableElevation>
+        Submit
       </Button>
+      {/* <Button variant="contained" onClick={debug}>debug</Button> */}
     </div>
   );
 }

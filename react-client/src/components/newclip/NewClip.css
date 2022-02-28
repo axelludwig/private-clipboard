@@ -6,9 +6,9 @@
 }
 
 .newClip-component {
-  z-index: 100000 !important;
+  /* z-index: 1000 !important; */
   padding: 2vh 2vw 2vh 2vw;
-  position: fixed;
+  /* position: fixed; */
 }
 
 .uploaded:hover {
@@ -25,7 +25,12 @@
 }
 
 .imageUpload {
-  background-position: 10px -185px;
+  background-position: 10px -500px;
   /* max-height: 200px !important; */
   /* border: 5px solid red;  */
+  /* z-index: 100000000 !important; */
+}
+
+.buttonSubmit {
+  /* z-index: 500 !important; */
 }

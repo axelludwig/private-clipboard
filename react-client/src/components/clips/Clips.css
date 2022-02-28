@@ -1,8 +1,11 @@
 .clips {
-  height: calc(90vh);
-  padding-top: 20vh;
+  min-height: calc(75vh);
+  /* padding-top: 20vh; */
+  /* overflow: auto; */
   /* TODO adapter la taille à la taille du newclip */
 
   /* border: solid 1px rgb(0, 0, 0);
   border-radius: 0.5vw; */
+
+  padding-bottom: 1vh;
 }

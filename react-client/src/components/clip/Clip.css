@@ -10,7 +10,8 @@
 }
 
 .image {
-  display: block;
+  cursor: pointer;
+  margin: 3vh 0 3vh 0;
 }
 
 .clip {
@@ -28,7 +29,6 @@
 
 .content {
   cursor: pointer;
-  /* border: solid green 1px; */
   display: flex;
   justify-content: center;
   text-align: center;

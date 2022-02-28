@@ -1,77 +1,110 @@
 import React, { Component } from "react";
 import { Link, BrowserRouter as Switch, Route } from "react-router-dom";
 
+import { styled } from "@mui/material/styles";
+import CustomScroller from "react-custom-scroller";
+import CustomScroll from "react-custom-scroll";
+import Grid from "@mui/material/Grid";
+import { useLocation } from "react-router-dom";
+
+import { purple } from "@mui/material/colors";
+
 import Frame from "./components/Frame/FrameFunction";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { styled } from "@mui/material/styles";
-
 import {
-  Button,
-  ButtonGroup,
-} from "@material-ui/core";
+  createTheme,
+  PaletteColorOptions,
+  ThemeProvider
+} from "@mui/material/styles";
 
-const ColorButton = styled(Button)(({ theme }) => ({
-  flex: "auto",
-  width: "50%",
+import { Button, ButtonGroup } from "@material-ui/core";
+import { Stack } from "@mui/material";
+
+const ColorButton = styled(Button)({
+  width: "100%",
   color: "#ffffff",
-  backgroundColor: "#9966ff",
+  backgroundColor: "#9966ff ",
+  borderRadius: "0 !important",
   "&:hover": {
-    backgroundColor: "#BA97FF",
-    color: "#000000"
+    backgroundColor: "#544CFF !important",
+    color: "#000000 !important",
+    border: "1px solid black !important",
+    borderColor: "#000000"
   },
-}));
-
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  "&:active": {
+    boxShadow: "none",
+    backgroundColor: "#0062cc",
+    borderColor: "#005cbf"
   }
+});
 
-  componentDidMount() {
-    document.body.style.backgroundColor = "#212121";
-  }
+export default function App() {
+  // const handleClick = () => {
+  // if (3 === t) {
+  //   socket.emit("test");
+  //   socket.on("test2", () => {
+  //     console.log("test opk");
+  //     this.setState({
+  //       res: "ça marche",
+  //     });
+  //   });
+  // }
+  // };
 
-  handleClick = (t) => {
-    // if (3 === t) {
-    //   socket.emit("test");
-    //   socket.on("test2", () => {
-    //     console.log("test opk");
-    //     this.setState({
-    //       res: "ça marche",
-    //     });
-    //   });
+  const handleClick = pRoute => {
+    // route = window.location.pathname.replace('/', '');
+    // if (route == "") {
     // }
   };
 
-  render() {
-    return (
+  return (
+    <div>
       <div className="app-component">
         <Switch className="switch">
-          <ButtonGroup aria-label="outlined button group">
-            <ColorButton component={Link} to="/" variant="contained">
-              public
-            </ColorButton>
-            <ColorButton component={Link} to="/private" variant="contained">
-              private
-            </ColorButton>
-            <Button onClick={this.handleClick.bind(this, 3)}>socket</Button>
-          </ButtonGroup>
-
+          <Grid container>
+            <Grid item xs={6}>
+              <ColorButton
+                onClick={() => handleClick("/")}
+                sx={{
+                  backgroundColor: "#756FFF !important",
+                  border: "1px solid #756FFF !important",
+                  borderTopLeftRadius: "0.5vw !important"
+                }}
+                disableElevation
+                component={Link}
+                to="/"
+              >
+                public
+              </ColorButton>
+            </Grid>
+            <Grid item xs={6}>
+              <ColorButton
+                onClick={() => handleClick("/private")}
+                sx={{
+                  backgroundColor: "#756FFF !important",
+                  border: "1px solid #756FFF !important",
+                  borderTopRightRadius: "0.5vw !important"
+                }}
+                component={Link}
+                to="/private"
+              >
+                private
+              </ColorButton>
+            </Grid>
+          </Grid>
           <Route
             exact
             path="/"
-            render={(props) => <Frame {...props} context="public" />}
+            render={props => <Frame {...props} context="public" />}
           />
           <Route
             path="/private"
-            render={(props) => <Frame {...props} context="private" />}
+            render={props => <Frame {...props} context="private" />}
           />
         </Switch>
       </div>
-    );
-  }
+    </div>
+  );
 }
-
-export default App;

@@ -4,7 +4,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #212121;
+}
+
+.scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 code {
@@ -12,11 +15,4 @@ code {
     monospace;
 }
 
-html {
-  background-color: #212121;
-}
-
-.test {
-  background-color: #303030;
-  color: white;
-}
+html {}

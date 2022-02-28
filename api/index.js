@@ -14,6 +14,8 @@ const io = socketIo(server);
 const apiport = 8000;
 const port = 8001;
 
+const mime = require('mime-types')
+
 // const cors = require('cors');
 
 app.use(express.json());
@@ -48,7 +50,6 @@ io.on("connection", (socket) => {
 });
 
 app.use(function (req, res, next) {
-  // res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
   res.header(
@@ -62,8 +63,6 @@ app.get("/clips", function (req, res) {
   let private = req.query.access == "private" ? 1 : 0;
   let query =
     "SELECT * from Clips WHERE private = " + private + " ORDER BY time DESC";
-  // const body = req.query;
-  // console.log(body);
   pool
     .getConnection()
     .then((conn) => {
@@ -86,7 +85,6 @@ app.get("/clips", function (req, res) {
 app.delete("/clips", function (req, res) {
   console.log(req.body);
   var query = "DELETE FROM Clips WHERE id = " + req.body.id + " ;";
-  // console.log(query);
   pool
     .getConnection()
     .then((conn) => {
@@ -103,7 +101,6 @@ app.delete("/clips", function (req, res) {
 });
 
 app.post("/clips", function (req, res) {
-  // console.log(req.body);
   var query =
     "INSERT INTO Clips(content, time, private, imagesrc)" +
     "values('" +
@@ -113,7 +110,6 @@ app.post("/clips", function (req, res) {
     " ,'" +
     req.body.imagesrc +
     "')";
-  // console.log(query);
   pool
     .getConnection()
     .then((conn) => {
@@ -136,37 +132,13 @@ app.get("/", (req, res) => {
 
 app.get("/images/:id", function (req, res) {
   var fullpath = path.join(__dirname, "\\images\\", req.params.id);
-  let extension = req.params.id.split('.')[2]
   try {
     if (fs.existsSync(fullpath)) {
-      res.set({ 'Content-Type': 'image/' + extension });
+      res.set({ 'Content-Type': mime.lookup(fullpath) });
       res.sendFile(fullpath);
     }
   } catch { }
-  // var jpg = __dirname + '\\images\\' + req.params.id + '.jpg';
-  // var png = __dirname + '\\images\\' + req.params.id + '.png';
-  // var found = false;
-  // try {
-  //   if (fs.existsSync(jpg)) {
-  //     found = true;
-  //     res.sendFile(jpg)
-  //   }
-  // } catch { };
-  // if (!found) {
-  //   try {
-  //     if (fs.existsSync(png)) res.sendFile(png)
-  //   } catch { };
-  // }
 });
-
-// app.post("/images", function (req, res) {
-//   console.log('ok');
-//   console.log(req.body  );
-//   var path = __dirname + "\\images\\" + req.body.id + "";
-//   try {
-//     if (fs.existsSync(path)) res.sendFile(path);
-//   } catch { }
-// });
 
 app.post("/image", function (req, res) {
   if (!req.files) return res.status(500).send({ msg: "file is not found" });
