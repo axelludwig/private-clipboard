@@ -19,7 +19,6 @@
     "bootstrap": "^4.6.1",
     "caniuse-lite": "^1.0.30001285",
     "lint": "^0.7.0",
-    "material-ui-image": "^3.3.1",
     "mime-types": "^2.1.34",
     "moment": "^2.29.1",
     "mui-image": "^1.0.4",

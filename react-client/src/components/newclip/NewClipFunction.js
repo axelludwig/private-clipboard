@@ -31,57 +31,58 @@ function NewClip(props) {
   const [fileName, setFileName] = useState();
   const [newClip, setNewClip] = useState(props.newClipProp);
 
-  const PinkSwitch = styled(Switch)(({ theme }) => ({
+  const PinkSwitch = styled(Switch)({
     "& .MuiSwitch-switchBase.Mui-checked": {
-      color: "#a366ff",
+      color: "#544CFF",
       "&:hover": {
-        backgroundColor: alpha("#a366ff", theme.palette.action.hoverOpacity),
-      },
+        backgroundColor: "rgba(0, 0, 0, 0)"
+      }
     },
     "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-      backgroundColor: "#a366ff",
-    },
-  }));
+      backgroundColor: "#544CFF !important"
+    }
+  });
 
   const handleSubmit = () => {
     if (null != selectedFile) uploadHandler();
     var json = {
       content: clipText,
       private: isPrivate,
-      imagesrc: fileName,
+      imagesrc: fileName
     };
     fetch("http://localhost:8000/clips", {
       crossDomain: true,
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(json),
+      body: JSON.stringify(json)
     })
-      .then((res) => {
+      .then(res => {
         return res.json();
       })
-      .then((res) => {
+      .then(res => {
         json.id = res.id;
         // setNewClip(json);
+        console.log(json);
         props.passChildData(json);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
     deleteImage();
   };
 
-  const handleCheck = (e) => {
+  const handleCheck = e => {
     setIsPrivate(e.target.checked);
     setPrivateText(e.target.checked ? "private" : "public");
   };
 
   const debug = () => {
-    // console.log(selectedFile);    
+    // console.log(selectedFile);
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setClipText(event.target.value);
   };
 
@@ -91,9 +92,9 @@ function NewClip(props) {
     setButtonText("Upload File");
   };
 
-  const fileChangedHandler = (event) => {
+  const fileChangedHandler = event => {
     const file = event.target.files[0];
-    let newFileName = file.name.replace(/ /g, '_');
+    let newFileName = file.name.replace(/ /g, "_");
     // setBackupFile(file);
     setSelectedFile(file);
     setImagePreview(URL.createObjectURL(file));
@@ -103,13 +104,13 @@ function NewClip(props) {
 
   const uploadHandler = () => {
     const config = {
-      onUploadProgress: (progressEvent) => {
+      onUploadProgress: progressEvent => {
         let progress =
           Math.round((progressEvent.loaded / progressEvent.total) * 100) + "%";
-      },
+      }
     };
     console.log(selectedFile);
-    let newFileName = selectedFile.name.replace(/ /g, '_');
+    let newFileName = selectedFile.name.replace(/ /g, "_");
     const formData = new FormData();
     formData.append("image", selectedFile, newFileName);
     axios.post("http://localhost:8000/image", formData, config);
@@ -132,14 +133,14 @@ function NewClip(props) {
   return (
     <div className="newClip-component">
       <div className="imageUpload">
-        <Grid container >
+        <Grid container>
           <Grid item xs={3}>
             <Button variant="contained" component="label" disableElevation>
               {buttonText}
               <input
                 type="file"
                 hidden
-                onClick={(event) => (event.target.value = null)}
+                onClick={event => (event.target.value = null)}
                 onChange={fileChangedHandler}
               />
             </Button>
@@ -158,13 +159,15 @@ function NewClip(props) {
         placeholder="text content"
       />
       <PinkSwitch onChange={handleCheck} checked={isPrivate} />
-      <Button className="buttonSubmit" variant="contained" onClick={handleSubmit} disableElevation>
+      <Button
+        className="buttonSubmit"
+        variant="contained"
+        onClick={handleSubmit}
+        disableElevation
+      >
         Submit
       </Button>
-        {privateText}
-      <Button className="buttonSubmit" variant="contained" onClick={handleSubmit} disableElevation>
-        Submit
-      </Button>
+      {privateText}
       {/* <Button variant="contained" onClick={debug}>debug</Button> */}
     </div>
   );

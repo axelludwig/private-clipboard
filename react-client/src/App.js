@@ -25,7 +25,7 @@ import { Stack } from "@mui/material";
 const ColorButton = styled(Button)({
   width: "100%",
   color: "#ffffff",
-  backgroundColor: "#9966ff ",
+  backgroundColor: "#544CFF !important",
   borderRadius: "0 !important",
   "&:hover": {
     backgroundColor: "#544CFF !important",

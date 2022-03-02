@@ -15,12 +15,11 @@ class Clips extends Component {
     super(props);
     this.state = {
       clips: [],
-      private: props.private,
-      newClip: props.newClipProps
+      private: props.private
     };
 
     socket.on("update", () => {
-      console.log("updatet");
+      console.log("updated");
       this.updateClips();
     });
   }
@@ -31,15 +30,8 @@ class Clips extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("will receive");
-    if (nextProps.newClipProps !== this.state.newClip) {
-      if (
-        this.state.newClip == null ||
-        this.state.newClip.private == this.state.private
-      ) {
-        this.updateClips(this.state.clips, nextProps.newClipProps);
-      }
-    }
+    if (nextProps.newClipProps.private == this.state.private)
+      this.updateClips(nextProps.newClipProps);
   }
 
   deteleClip(id) {
@@ -83,9 +75,9 @@ class Clips extends Component {
       });
   };
 
-  updateClips = (clips, newClip) => {
-    if (newClip != null) clips.unshift(newClip);
-    this.setState({ clips: clips });
+  updateClips = newClip => {
+    if (newClip != null) this.state.clips.unshift(newClip);
+    this.setState({ clips: this.state.clips });
   };
 
   handleClick = () => {

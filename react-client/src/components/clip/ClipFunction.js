@@ -20,7 +20,7 @@ function Clip(props) {
   const [id, setId] = useState(raw.id);
   const [content, setContent] = useState(raw.content);
   const [statePrivate, setstatePrivate] = useState(raw.private);
-  const [postDate, setPostDate] = useState(raw.postDate);
+  const [postDate, setPostDate] = useState(raw.time);
   const [imagesrc, setImagesrc] = useState(raw.imagesrc);
   const [postDateMoment, setPostDateMoment] = useState("");
 
@@ -64,14 +64,18 @@ function Clip(props) {
   let imageFileName = imagesrc;
   let image,
     downloadButton = null;
-  if (imageFileName != "undefined" && imageFileName != "null") {
+  if (
+    imageFileName != "undefined" &&
+    imageFileName !== undefined &&
+    imageFileName != "null"
+  ) {
     image = (
       <Image
         src={"http://localhost:8000/images/" + imageFileName}
         className="image"
-        shift="top"
+        easing="linear"
         distance="2rem"
-        shiftDuration={320}
+        shiftDuration={160}
         onClick={() => imageClicked()}
       />
     );

@@ -17,7 +17,7 @@ ReactDOM.render(
   <SnackbarProvider
     maxSnack={1}
     anchorOrigin={{
-      vertical: "top",
+      vertical: "bottom",
       horizontal: "center"
     }}
     TransitionComponent={Slide}
