@@ -32,12 +32,16 @@
   display: flex;
   justify-content: center;
   text-align: center;
+  display: inline;
+  word-break: break-all;
 }
 
 .date {
   display: flex;
   justify-content: center;
   text-align: center;
+  display: inline;
+  word-break: break-all;
 }
 
 p {

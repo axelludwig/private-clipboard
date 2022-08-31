@@ -26,3 +26,11 @@
   /* background-color: "#BA97FF";
   color: "#000000"; */
 }
+
+.selected-left {
+  background-color: "#544CFF !important";
+  color: "#000000 !important";
+  border: "1px solid black !important";
+  border-color: "#000000" !important;
+
+}

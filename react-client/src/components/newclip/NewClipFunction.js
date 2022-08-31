@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+
 import "./NewClip.css";
 
-import { Switch, Button, IconButton, Grid } from "@material-ui/core";
+import { Switch, Button, IconButton, Grid, Input, TextField } from "@material-ui/core";
 import { alpha, styled } from "@mui/material/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
@@ -31,9 +32,9 @@ function NewClip(props) {
   const [fileName, setFileName] = useState();
   const [newClip, setNewClip] = useState(props.newClipProp);
 
-  const PinkSwitch = styled(Switch)({
+  const CustomSwitch = styled(Switch)({
     "& .MuiSwitch-switchBase.Mui-checked": {
-      color: "#544CFF",
+      color: "#544CFF !important",
       "&:hover": {
         backgroundColor: "rgba(0, 0, 0, 0)"
       }
@@ -131,13 +132,13 @@ function NewClip(props) {
   // useEffect(() => { });
 
   return (
-    <div className="newClip-component">
-      <div className="imageUpload">
-        <Grid container>
-          <Grid item xs={3}>
+    <div className="newclipcomponent">
+      <Grid container>
+        <div className="imageUpload">
+          <Grid item xs={12}>
             <Button variant="contained" component="label" disableElevation>
               {buttonText}
-              <input
+              <Input
                 type="file"
                 hidden
                 onClick={event => (event.target.value = null)}
@@ -145,31 +146,43 @@ function NewClip(props) {
               />
             </Button>
             {deleteButton}
-          </Grid>
-          <Grid item xs={9}>
-            {image}
-          </Grid>
-        </Grid>
-      </div>
+            {/* </Grid>
+            <Grid item xs={9}> */}
 
-      <input
-        onChange={handleChange}
-        value={clipText}
-        type="text"
-        placeholder="text content"
-      />
-      <PinkSwitch onChange={handleCheck} checked={isPrivate} />
-      <Button
-        className="buttonSubmit"
-        variant="contained"
-        onClick={handleSubmit}
-        disableElevation
-      >
-        Submit
-      </Button>
-      {privateText}
-      {/* <Button variant="contained" onClick={debug}>debug</Button> */}
-    </div>
+          </Grid>
+        </div>
+
+        <TextField
+          className="textfield"
+          onChange={handleChange}
+          value={clipText}
+          type="text"
+          placeholder="text content"
+        />
+        <CustomSwitch
+          onChange={handleCheck}
+          checked={isPrivate}
+        />
+      </Grid>
+
+
+      <Grid container>
+        <Grid item xs={12}>
+          <Button
+            className="buttonSubmit"
+            variant="contained"
+            onClick={handleSubmit}
+            disableElevation
+          >
+            Submit
+          </Button>
+          {/* {privateText} */}
+          {/* <Button variant="contained" onClick={debug}>debug</Button> */}
+        </Grid>
+      </Grid>
+      {image}
+
+    </div >
   );
 }
 
