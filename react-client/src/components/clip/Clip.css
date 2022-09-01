@@ -1,46 +1,51 @@
 .clip {
-  /* border: red 1px solid; */
-  /* display: flex;
+    /* border: red 1px solid; */
+    /* display: flex;
   justify-content: center;
   align-items: center; */
-
-  /* text-align: center; */
-  /* display: table-cell; */
-  /* vertical-align: middle; */
+    /* text-align: center; */
+    /* display: table-cell; */
+    /* vertical-align: middle; */
 }
 
 .image {
-  cursor: pointer;
-  margin: 3vh 0 3vh 0;
+    cursor: pointer;
+    margin: 3vh 0 3vh 0;
 }
 
 .clip {
-  margin-left: auto;
-  margin-right: auto;
-  height: auto;
-  max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    max-width: 80%;
 }
 
 .grid {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  text-align: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    overflow-wrap: break-word;
+    display: inline-block;
+    word-break: break-word;
 }
 
 .date {
-  display: flex;
-  justify-content: center;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    overflow-wrap: break-word;
+    display: inline-block;
+    word-break: break-word;
 }
 
 p {
-  margin: 0;
-  word-break: break-all;
+    margin: 0;
+    word-break: break-all;
 }
