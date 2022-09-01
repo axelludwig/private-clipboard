@@ -11,8 +11,11 @@ import Image from "mui-image";
 
 import { useSnackbar } from "notistack";
 
-const axios = require("axios");
-const mime = require("mime-types");
+import axios from "axios";
+import mime from "mime-types";
+import saveAs from 'file-saver'
+
+import { copyImageToClipboard } from 'copy-image-clipboard'
 
 function Clip(props) {
   const [newClip, setNewClip] = useState(props.newClipProps);
@@ -26,6 +29,7 @@ function Clip(props) {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
+
   useEffect(() => {
     // constructor
     setPostDateMoment(moment(postDate).format("MMMM Do YYYY, h:mm:ss a"));
@@ -37,7 +41,7 @@ function Clip(props) {
   };
 
   const download = () => {
-    window.location.replace("http://localhost:8000/images/" + imagesrc);
+    saveAs('http://localhost:8000/images/' + imagesrc, imagesrc)
     enqueueSnackbar(`Image ${imagesrc} downloaded`);
   };
 
@@ -47,41 +51,42 @@ function Clip(props) {
   };
 
   const imageClicked = async () => {
-    const img = await fetch("http://localhost:8000/images/" + imagesrc);
-    let imgBlob = await img.blob();
-    const imageType = mime.lookup(imagesrc).toString();
-    imgBlob = imgBlob.slice(0, imgBlob.size, imageType);
-    try {
-      navigator.clipboard.write([
-        new window.ClipboardItem({ [imageType]: imgBlob })
-      ]);
-    } catch (error) {
-      console.error(error);
-    }
-    enqueueSnackbar("Image copied to clipboard");
+    copyImageToClipboard(
+      "http://localhost:8000/images/" + imagesrc,
+    )
+      .then(() => {
+        enqueueSnackbar("Image copied to clipboard");
+      })
+      .catch((e) => {
+        console.log('Error: ', e.message)
+      })
   };
 
   let imageFileName = imagesrc;
   let image,
-    downloadButton = null;
+    downloadButton;
   if (
     imageFileName != "undefined" &&
     imageFileName !== undefined &&
     imageFileName != "null"
   ) {
     image = (
-      <Image
-        src={"http://localhost:8000/images/" + imageFileName}
-        className="image"
-        easing="linear"
-        distance="2rem"
-        shiftDuration={160}
-        onClick={() => imageClicked()}
-      />
+      <Tooltip title="Copy image to clipboard">
+        <div>
+          <Image
+            src={"http://localhost:8000/images/" + imageFileName}
+            className="image"
+            easing="linear"
+            distance="2rem"
+            shiftDuration={160}
+            onClick={() => imageClicked()}
+          />
+        </div>
+      </Tooltip>
     );
     downloadButton = (
       <Tooltip title="Download image">
-        <IconButton onClick={() => download(imageFileName)}>
+        <IconButton onClick={download}>
           <CloudDownloadIcon />
         </IconButton>
       </Tooltip>
@@ -90,7 +95,9 @@ function Clip(props) {
 
   return (
     <div className="clip" id={id}>
-      <Grid className="grid" container spacing={0}>
+      <Grid className="grid" container direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start" spacing={4}>
         <Grid item xs={8}>
           <Tooltip title="Copy content to clipboard">
             <div onClick={() => contentClick()} className="content">
@@ -100,16 +107,16 @@ function Clip(props) {
         </Grid>
         <Grid className="date" item xs={2}>
           <Tooltip title={postDateMoment}>
-            <Moment format="DD/MM/YYYY">{postDate}</Moment>
+            <Moment format="DD/MM/YY">{postDate}</Moment>
           </Tooltip>
         </Grid>
-        <Grid item xs={1}>
+        <Grid xs={1}>
           {downloadButton}
         </Grid>
-        <Grid item xs={1}>
+        <Grid xs={1}>
           <Tooltip title="Delete">
             <IconButton onClick={() => deleteButton(id)}>
-              <DeleteIcon />
+              <DeleteIcon sx={{ justifyContent: 'center' }} />
             </IconButton>
           </Tooltip>
         </Grid>

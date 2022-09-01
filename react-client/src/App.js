@@ -25,8 +25,6 @@ import { Stack } from "@mui/material";
 const ColorButton = styled(Button)({
   width: "100%",
   color: "#ffffff",
-  backgroundColor: "#544CFF !important",
-  borderRadius: "0 !important",
   "&:hover": {
     backgroundColor: "#544CFF !important",
     color: "#000000 !important",
@@ -59,25 +57,44 @@ export default function App() {
     // }
   };
 
+  const getColorButton = (p) => {
+    let res;
+    console.log(window.location.href);
+    switch (p) {
+      case "/":
+        res = <ColorButton
+          onClick={() => handleClick("/")}
+          className="selected-left"
+          sx={{
+            backgroundColor: "#756FFF",
+            border: "1px solid #756FFF",
+            borderTopLeftRadius: "0.5vw ",
+            borderRadius: "0 !important",
+          }}
+          disableElevation
+          component={Link}
+          to="/"
+        >
+          public
+        </ColorButton>
+        break;
+
+      default:
+        break;
+    }
+    return res;
+
+  }
+
+  let publicButton = getColorButton('/');
+
   return (
     <div>
       <div className="app-component">
         <Switch className="switch">
           <Grid container>
             <Grid item xs={6}>
-              <ColorButton
-                onClick={() => handleClick("/")}
-                sx={{
-                  backgroundColor: "#756FFF !important",
-                  border: "1px solid #756FFF !important",
-                  borderTopLeftRadius: "0.5vw !important"
-                }}
-                disableElevation
-                component={Link}
-                to="/"
-              >
-                public
-              </ColorButton>
+              {publicButton}
             </Grid>
             <Grid item xs={6}>
               <ColorButton
@@ -86,6 +103,7 @@ export default function App() {
                   backgroundColor: "#756FFF !important",
                   border: "1px solid #756FFF !important",
                   borderTopRightRadius: "0.5vw !important"
+                  , borderRadius: "0 !important",
                 }}
                 component={Link}
                 to="/private"

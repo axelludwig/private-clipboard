@@ -15,7 +15,8 @@ class Clips extends Component {
     super(props);
     this.state = {
       clips: [],
-      private: props.private
+      private: props.private,
+      lastAddedClip: null
     };
 
     socket.on("update", () => {
@@ -30,8 +31,14 @@ class Clips extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.newClipProps.private == this.state.private)
+    if (
+      nextProps.newClipProps &&
+      nextProps.newClipProps.private == this.state.private &&
+      nextProps.newClipProps != this.state.lastAddedClip
+    ) {
       this.updateClips(nextProps.newClipProps);
+      this.state.lastAddedClip = nextProps.newClipProps;
+    }
   }
 
   deteleClip(id) {
