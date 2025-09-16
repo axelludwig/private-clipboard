@@ -63,13 +63,9 @@ function Clip(props) {
   };
 
   let imageFileName = imagesrc;
-  let image,
-    downloadButton;
-  if (
-    imageFileName != "undefined" &&
-    imageFileName !== undefined &&
-    imageFileName != "null"
-  ) {
+  let image;
+
+  if (imageFileName) {
     image = (
       <Tooltip title="Copy image to clipboard">
         <div>
@@ -84,44 +80,46 @@ function Clip(props) {
         </div>
       </Tooltip>
     );
-    downloadButton = (
-      <Tooltip title="Download image">
-        <IconButton onClick={download}>
-          <CloudDownloadIcon />
-        </IconButton>
-      </Tooltip>
-    );
   }
 
   return (
     <div className="clip" id={id}>
-      <Grid className="grid" container direction="row"
-        justifyContent="space-between"
-        alignItems="flex-start" spacing={4}>
-        <Grid item xs={8}>
+
+      <div className="row">
+        <div className="row-content">
           <Tooltip title="Copy content to clipboard">
             <div onClick={() => contentClick()} className="content">
               {content}
             </div>
           </Tooltip>
-        </Grid>
-        <Grid className="date" item xs={2}>
+        </div>
+
+        <div className="date">
           <Tooltip title={postDateMoment}>
             <Moment format="DD/MM/YY">{postDate}</Moment>
           </Tooltip>
-        </Grid>
-        <Grid xs={1}>
-          {downloadButton}
-        </Grid>
-        <Grid xs={1}>
+        </div>
+
+        <div className="row-download">
+          <Tooltip title="Download image">
+            <IconButton disabled={!imageFileName} onClick={download}>
+              <CloudDownloadIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+
+        <div className="row-delete">
           <Tooltip title="Delete">
             <IconButton onClick={() => deleteButton(id)}>
               <DeleteIcon sx={{ justifyContent: 'center' }} />
             </IconButton>
           </Tooltip>
-        </Grid>
-      </Grid>
-      {image}
+        </div>
+      </div>
+
+      <div className="row-image">
+        {image}
+      </div>
     </div>
   );
 }

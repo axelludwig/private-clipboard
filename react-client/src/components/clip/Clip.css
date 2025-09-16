@@ -1,3 +1,8 @@
+p {
+    margin: 0;
+    word-break: break-all;
+}
+
 .clip {
     /* border: red 1px solid; */
     /* display: flex;
@@ -10,14 +15,37 @@
 
 .image {
     cursor: pointer;
-    margin: 3vh 0 3vh 0;
+    margin: 0 0 0 0;
 }
 
 .clip {
-    margin-left: auto;
-    margin-right: auto;
     height: auto;
-    max-width: 80%;
+    margin: 24px;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    /* margin-left: auto;
+    margin-right: auto; */
+    /* max-width: 80%; */
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+    align-items: center;
+    align-content: space-around;
+
+    flex-wrap: nowrap !important;
+
+    width: 100%;
+    padding-left: 24px;
+    gap: 12px;
+
+
 }
 
 .grid {
@@ -28,24 +56,41 @@
 
 .content {
     cursor: pointer;
-    display: flex;
+    /* display: flex;
     justify-content: center;
     text-align: center;
     overflow-wrap: break-word;
     display: inline-block;
-    word-break: break-word;
+    word-break: break-word; */
+
+    overflow: hidden;
+    white-space: nowrap;
 }
 
-.date {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    overflow-wrap: break-word;
-    display: inline-block;
-    word-break: break-word;
+.row-content {
+    flex-grow: 1;
 }
 
-p {
-    margin: 0;
-    word-break: break-all;
+.flex {
+    flex: 1;
+}
+
+.row-download {
+    min-width: 48px;
+}
+
+/* .row-date {
+    flex: 1 1 auto;
+}
+
+.row-button {
+    flex: 1 1 auto;
+}
+
+.row-delete {
+    flex: 1 1 auto;
+} */
+
+.row-image {
+    margin: auto;
 }

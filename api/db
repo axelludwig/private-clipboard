@@ -13,3 +13,9 @@ values
 	('test', CURRENT_TIMESTAMP, false);
 
 	
+insert into
+	Clips (content, time, private)
+values
+	('test', CURRENT_TIMESTAMP, false);
+
+	

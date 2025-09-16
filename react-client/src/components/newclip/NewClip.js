@@ -6,7 +6,14 @@ import "./NewClip.css";
 
 import { Switch, Button, IconButton, Grid, Input, TextField } from "@material-ui/core";
 import { alpha, styled } from "@mui/material/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import { httpService } from '../../services/httpService';
+
+import { useData } from '../../services/dataContext';
+const { clips, updateClips } = useData();
+
+
 // const socket = openSocket('http://localhost:8001', { transports: ['websocket'] });
 
 // const socket = socketIOClient("http://localhost:8001");
@@ -51,26 +58,12 @@ function NewClip(props) {
       private: isPrivate,
       imagesrc: fileName
     };
-    fetch("http://localhost:8000/clips", {
-      crossDomain: true,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(json)
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(res => {
-        json.id = res.id;
-        // setNewClip(json);
-        console.log(json);
-        props.passChildData(json);
-      })
-      .catch(error => {
-        console.error(error);
-      });
+
+    httpService.postClip(json).then(() => {
+      // setNewClip(json);
+      console.log("received");
+    });
+
     deleteImage();
   };
 

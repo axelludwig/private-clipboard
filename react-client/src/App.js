@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 
 import { purple } from "@mui/material/colors";
 
-import Frame from "./components/Frame/FrameFunction";
+import Frame from "./components/Frame/Frame";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -21,6 +21,7 @@ import {
 
 import { Button, ButtonGroup } from "@material-ui/core";
 import { Stack } from "@mui/material";
+
 
 const ColorButton = styled(Button)({
   width: "100%",
@@ -59,7 +60,6 @@ export default function App() {
 
   const getColorButton = (p) => {
     let res;
-    console.log(window.location.href);
     switch (p) {
       case "/":
         res = <ColorButton
@@ -83,7 +83,6 @@ export default function App() {
         break;
     }
     return res;
-
   }
 
   let publicButton = getColorButton('/');
@@ -118,7 +117,7 @@ export default function App() {
             render={props => <Frame {...props} context="public" />}
           />
           <Route
-            path="/private"
+            path="/login"
             render={props => <Frame {...props} context="private" />}
           />
         </Switch>
